@@ -100,26 +100,39 @@ const Navigation = ({
     >
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
         <div className="flex justify-between items-center h-14 sm:h-16">
-          {/* Mobile Menu Button */}
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={toggleMenu}
-            className="lg:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none"
-            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={isMenuOpen ? 'close' : 'menu'}
-                initial={{ opacity: 0.5, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.15 }}
-              >
-                {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-              </motion.div>
-            </AnimatePresence>
-          </motion.button>
+          {/* Mobile Menu Button or Home Button */}
+          {showHomeButton && onBackToHome ? (
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={onBackToHome}
+              className="lg:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none flex items-center gap-2"
+              aria-label={getDisplayName('home')}
+            >
+              <Home size={20} className="text-indigo-500" />
+              <span className="font-medium text-sm">{getDisplayName('home')}</span>
+            </motion.button>
+          ) : (
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={toggleMenu}
+              className="lg:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none"
+              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={isMenuOpen ? 'close' : 'menu'}
+                  initial={{ opacity: 0.5, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                </motion.div>
+              </AnimatePresence>
+            </motion.button>
+          )}
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1 overflow-x-auto">
@@ -214,7 +227,7 @@ const Navigation = ({
 
         {/* Mobile Menu */}
         <AnimatePresence>
-          {isMenuOpen && (
+          {isMenuOpen && !showHomeButton && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ 
@@ -227,36 +240,6 @@ const Navigation = ({
             >
               <div className="px-2 pt-2 pb-3">
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  {/* Home Button for Mobile - Only for Research and Blog pages */}
-                  {showHomeButton && onBackToHome && (
-                    <motion.button
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ 
-                        opacity: 1, 
-                        scale: 1,
-                        transition: { 
-                          delay: 0,
-                          type: 'spring',
-                          stiffness: 300,
-                          damping: 20
-                        }
-                      }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => {
-                        onBackToHome();
-                        setIsMenuOpen(false);
-                      }}
-                      className="flex flex-col items-center gap-2 p-3 rounded-lg transition-all duration-200 text-gray-600 hover:bg-gray-100/50 hover:text-gray-900"
-                    >
-                      <motion.div className="w-6 h-6 text-indigo-500">
-                        <Home size={24} />
-                      </motion.div>
-                      <span className="font-medium text-xs text-center leading-tight">
-                        {getDisplayName('home')}
-                      </span>
-                    </motion.button>
-                  )}
-
                   {/* Regular Navigation Items - Only show on home page */}
                   {currentPage === 'home' && navigationItems.map((item, index) => (
                     <motion.button
@@ -266,7 +249,7 @@ const Navigation = ({
                         opacity: 1, 
                         scale: 1,
                         transition: { 
-                          delay: (index + (showHomeButton ? 1 : 0)) * 0.03,
+                          delay: index * 0.03,
                           type: 'spring',
                           stiffness: 300,
                           damping: 20
