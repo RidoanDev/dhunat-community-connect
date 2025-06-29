@@ -1,6 +1,9 @@
-
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, User, X, MessageCircle } from 'lucide-react';
+import {
+  Send,
+  User,
+  X,
+} from 'lucide-react';
 import { format } from 'date-fns';
 
 interface Message {
@@ -19,279 +22,213 @@ export const LiveChat = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Enhanced constant replies with comprehensive website information
+  // Enhanced constant replies with more information
   const getConstantReply = (userInput: string): string | null => {
     const lowerInput = userInput.toLowerCase();
 
-    // Website information
+    // Developer/Creator information
     if (
-      lowerInput.includes('ধুনট') ||
-      lowerInput.includes('dhunat') ||
-      lowerInput.includes('এপ') ||
-      lowerInput.includes('app') ||
-      lowerInput.includes('ওয়েবসাইট') ||
-      lowerInput.includes('website')
+      lowerInput.includes('developer') ||
+      lowerInput.includes('creator') ||
+      lowerInput.includes('who made you') ||
+      lowerInput.includes('your creator') ||
+      lowerInput.includes('zisan') ||
+      lowerInput.includes('ridoan')
     ) {
-      return `ধুনট.অ্যাপ সম্পর্কে তথ্য:
-      \n🏘️ ধুনট উপজেলার জন্য স্থানীয় সেবা ডিরেক্টরি
-      \n📱 ৩৫+ বিভিন্ন ক্যাটাগরিতে সেবা প্রদানকারী
-      \n🔍 সহজ খোঁজ ও ফিল্টার সুবিধা
-      \n📞 সরাসরি যোগাযোগ তথ্য
-      \n🗺️ ম্যাপ ও ঠিকানা সহ বিস্তারিত তথ্য
-      \n\nউপলব্ধ সেবাসমূহ: ডাক্তার, হাসপাতাল, রক্তদাতা, গাড়ি ভাড়া, থানা, আইনজীবী এবং আরও অনেক!`;
+      return `I was created by Md Ridoan Mahmud Zisan, a passionate web developer and student from Bogura, Bangladesh. 
+      \n\nHere's some info about him:
+      \n- 📫 Contact: ridoan.zisan@gmail.com
+      \n- 📞 Phone: +8801712525910
+      \n- 📍 Location: Bogura, Bangladesh
+      \n- 🔗 LinkedIn: https://linkedin.com/in/ridoan2007
+      \n- 🩸 Blood Group: B+
+      \n- 🎂 Date of Birth: December 31, 2007
+      \n- 🌐 Religion: Humanity`;
     }
 
-    // Categories information
+    // Education information
     if (
-      lowerInput.includes('ক্যাটাগরি') ||
-      lowerInput.includes('category') ||
-      lowerInput.includes('সেবা') ||
-      lowerInput.includes('service')
-    ) {
-      return `ধুনট.অ্যাপে উপলব্ধ ক্যাটাগরিসমূহ:
-      \n🏥 চিকিৎসা সেবা: ডাক্তার, হাসপাতাল, ডায়াগনস্টিক সেন্টার
-      \n🩸 জরুরি সেবা: রক্তদাতা, থানা, আইনজীবী
-      \n🚗 পরিবহন: গাড়ি ভাড়া, বাস সূচি, ট্রেন সূচি
-      \n🏫 শিক্ষা: শিক্ষক, শিক্ষা প্রতিষ্ঠান, ট্রেনিং সেন্টার
-      \n💼 চাকরি ও ব্যবসা: চাকরি, উদ্যোক্তা
-      \n🏠 দৈনন্দিন: বাজার, বাসা ভাড়া, হোটেল
-      \n🏛️ সরকারি: পৌরসভা, বিদ্যুৎ অফিস
-      \n🏦 ব্যাংকিং: ব্যাংক ও বীমা, গ্যাস স্টেশন
-      \n🎯 আরও ২০+ ক্যাটাগরি উপলব্ধ!`;
-    }
-
-    // Medical services
-    if (
-      lowerInput.includes('ডাক্তার') ||
-      lowerInput.includes('doctor') ||
-      lowerInput.includes('চিকিৎসক') ||
-      lowerInput.includes('হাসপাতাল') ||
-      lowerInput.includes('hospital')
-    ) {
-      return `চিকিৎসা সেবা:
-      \n👨‍⚕️ ডাক্তার: বিশেষজ্ঞ চিকিৎসক তালিকা
-      \n🏥 হাসপাতাল: স্থানীয় হাসপাতাল ও ক্লিনিক
-      \n🔬 ডায়াগনস্টিক: প্যাথলজি ও ইমেজিং সেন্টার
-      \n\nফিল্টার সুবিধা:
-      \n- চিকিৎসকের বিশেষত্ব অনুযায়ী
-      \n- এলাকা অনুযায়ী
-      \n- পরামর্শ ফি অনুযায়ী
-      \n- সময়সূচি অনুযায়ী`;
-    }
-
-    // Blood donation
-    if (
-      lowerInput.includes('রক্ত') ||
-      lowerInput.includes('blood') ||
-      lowerInput.includes('রক্তদাতা') ||
-      lowerInput.includes('donor')
-    ) {
-      return `রক্তদান সেবা:
-      \n🩸 সকল রক্তের গ্রুপের দাতা উপলব্ধ
-      \n📱 জরুরি যোগাযোগ নম্বর
-      \n📍 এলাকাভিত্তিক রক্তদাতা খোঁজ
-      \n⏰ ২৴/৭ জরুরি সেবা
-      \n\nরক্তের গ্রুপ: A+, A-, B+, B-, AB+, AB-, O+, O-
-      \n\nজরুরি প্রয়োজনে সরাসরি যোগাযোগ করুন!`;
-    }
-
-    // Transportation
-    if (
-      lowerInput.includes('গাড়ি') ||
-      lowerInput.includes('car') ||
-      lowerInput.includes('ভাড়া') ||
-      lowerInput.includes('rent') ||
-      lowerInput.includes('বাস') ||
-      lowerInput.includes('bus')
-    ) {
-      return `পরিবহন সেবা:
-      \n🚗 গাড়ি ভাড়া: প্রাইভেট কার, মাইক্রোবাস
-      \n🚌 বাস সূচি: ধুনট থেকে সকল গন্তব্য
-      \n🚂 ট্রেন সূচি: রেল সময়সূচি
-      \n🏍️ মোটরসাইকেল ভাড়া
-      \n\nবিশেষ সুবিধা:
-      \n- দৈনিক/মাসিক ভাড়া
-      \n- AC/Non-AC গাড়ি
-      \n- অভিজ্ঞ চালক
-      \n- নিরাপদ যাত্রা`;
-    }
-
-    // Education
-    if (
-      lowerInput.includes('শিক্ষা') ||
       lowerInput.includes('education') ||
-      lowerInput.includes('স্কুল') ||
+      lowerInput.includes('study') ||
       lowerInput.includes('school') ||
-      lowerInput.includes('কলেজ') ||
       lowerInput.includes('college')
     ) {
-      return `শিক্ষা সেবা:
-      \n🏫 শিক্ষা প্রতিষ্ঠান: স্কুল, কলেজ, মাদ্রাসা
-      \n👨‍🏫 শিক্ষক: বিষয়ভিত্তিক শিক্ষক তালিকা
-      \n📚 ট্রেনিং সেন্টার: কম্পিউটার, ভাষা প্রশিক্ষণ
-      \n🎓 কোচিং সেন্টার
-      \n\nশিক্ষার স্তর:
-      \n- প্রাথমিক শিক্ষা
-      \n- মাধ্যমিক শিক্ষা
-      \n- উচ্চ মাধ্যমিক
-      \n- কারিগরি শিক্ষা`;
+      return `Md Ridoan Mahmud Zisan's Education:
+      \n🎓 Higher Secondary Certificate (HSC)
+      \n- Institution: Karatoa Multimedia School and College
+      \n- Year: 2023-2024
+      \n- GPA: 5.00/5.00 (Science)
+      \n- Major: Higher Mathematics
+      \n\n🎓 Secondary School Certificate (SSC)
+      \n- Institution: Dhunat Govt N.U. Pilot Model High School
+      \n- Year: 2021-2022
+      \n- GPA: 5.00/5.00 (Science)
+      \n- Group: Science
+      \n- Major: Higher Mathematics`;
     }
 
-    // Jobs
+    // Skills information
     if (
-      lowerInput.includes('চাকরি') ||
-      lowerInput.includes('job') ||
-      lowerInput.includes('কাজ') ||
-      lowerInput.includes('work')
+      lowerInput.includes('skill') ||
+      lowerInput.includes('expertise') ||
+      lowerInput.includes('what can you do') ||
+      lowerInput.includes('ability')
     ) {
-      return `চাকরির সুযোগ:
-      \n💼 স্থানীয় চাকরির বিজ্ঞপ্তি
-      \n🏢 সরকারি চাকরি
-      \n🏪 প্রাইভেট কোম্পানি
-      \n🏭 কারখানা ও উৎপাদন
-      \n👷 দিনমজুর
-      \n\nচাকরির ক্ষেত্র:
-      \n- অফিস সহায়ক
-      \n- বিক্রয় প্রতিনিধি
-      \n- কারিগরি কাজ
-      \n- গৃহস্থালি কাজ`;
+      return `Md Ridoan Mahmud Zisan's Skills:
+      \n💻 Technical Skills:
+      \n- Web Development (HTML, CSS, JavaScript)
+      \n- React.js, Firebase
+      \n- AI & Machine Learning basics
+      \n\n🗣️ Language Skills:
+      \n- Bengali (Fluent)
+      \n- English (Professional)
+      \n\n🏆 Core Professional Skills:
+      \n- MS Office Suite
+      \n- Email Communication
+      \n- Team Collaboration
+      \n- Time Management
+      \n- Problem Solving
+      \n- Professional Ethics
+      \n\n🎨 Additional Skills:
+      \n- Canva/Photoshop
+      \n- Social Media Management
+      \n- Customer Service
+      \n- Basic Troubleshooting`;
     }
 
-    // Government services
+    // Projects information
     if (
-      lowerInput.includes('সরকারি') ||
-      lowerInput.includes('government') ||
-      lowerInput.includes('পৌরসভা') ||
-      lowerInput.includes('municipality') ||
-      lowerInput.includes('থানা') ||
-      lowerInput.includes('police')
+      lowerInput.includes('project') ||
+      lowerInput.includes('work') ||
+      lowerInput.includes('build') ||
+      lowerInput.includes('developed')
     ) {
-      return `সরকারি সেবা:
-      \n🏛️ পৌরসভা: নাগরিক সেবা
-      \n👮 থানা: আইন শৃঙ্খলা
-      \n⚡ বিদ্যুৎ অফিস: বিদ্যুৎ সংযোগ ও বিল
-      \n🏦 ব্যাংক: সরকারি ব্যাংক শাখা
-      \n📋 বিভিন্ন সার্টিফিকেট সেবা
-      \n\nজরুরি নম্বর:
-      \n- জাতীয় জরুরি সেবা: ৯৯৯
-      \n- ফায়ার সার্ভিস: ১৯৯
-      \n- পুলিশ: ১০০`;
+      return `Md Ridoan Mahmud Zisan's Notable Projects:
+      \n🩸 BOBDO (Bogura Online Blood Donation Organization)
+      \n- React + Firebase blood management system
+      \n- Real-time donor database
+      \n- Serves 68k+ community members
+      \n- Reduced response time by 40%
+      \n- Link: https://bobdo.netlify.app
+      \n\n📐 UniConverter
+      \n- Unit converter supporting 50+ measurement categories
+      \n- Progressive Web App (PWA) functionality
+      \n- Link: https://uniconverter.netlify.app
+      \n\n💻 DevHub
+      \n- Portfolio showcasing all projects
+      \n- Link: https://devhub-i.netlify.app`;
     }
 
-    // Shopping and business
+    // Certificates information
     if (
-      lowerInput.includes('কেনাবেচা') ||
-      lowerInput.includes('shop') ||
-      lowerInput.includes('বাজার') ||
-      lowerInput.includes('market') ||
-      lowerInput.includes('ব্যবসা') ||
-      lowerInput.includes('business')
+      lowerInput.includes('certificate') ||
+      lowerInput.includes('certification') ||
+      lowerInput.includes('achievement') ||
+      lowerInput.includes('award') ||
+      lowerInput.includes('olympiad')
     ) {
-      return `কেনাবেচা ও ব্যবসা:
-      \n🛒 আজকের বাজার: দৈনিক দাম তালিকা
-      \n🏪 স্থানীয় দোকানপাট
-      \n👔 উদ্যোক্তা: ব্যবসায়িক তথ্য
-      \n🌱 নার্সারি: গাছপালা ও ফুল
-      \n🔧 মিস্ত্রি: বিভিন্ন কারিগরি সেবা
-      \n\nবিশেষ সুবিধা:
-      \n- হোম ডেলিভারি
-      \n- পাইকারি ও খুচরা দাম
-      \n- অর্ডার বুকিং`;
-    }
-
-    // Basic greetings
-    if (
-      lowerInput.includes('হ্যালো') ||
-      lowerInput.includes('hello') ||
-      lowerInput.includes('হাই') ||
-      lowerInput.includes('hi') ||
-      lowerInput.includes('সালাম') ||
-      lowerInput.includes('সালামুয়ালাইকুম')
-    ) {
-      return `আসসালামু আলাইকুম! 👋
-      \nধুনট.অ্যাপে আপনাকে স্বাগতম!
-      \n\nআমি আপনার ডিজিটাল সহায়ক। আমি সাহায্য করতে পারি:
-      \n• স্থানীয় সেবা খুঁজে পেতে
-      \n• যোগাযোগের তথ্য জানতে
-      \n• বিভিন্ন ক্যাটাগরি সম্পর্কে জানতে
-      \n• জরুরি সেবা নিতে
-      \n\nকী জানতে চান?`;
-    }
-
-    // Thank you responses
-    if (
-      lowerInput.includes('ধন্যবাদ') ||
-      lowerInput.includes('thank') ||
-      lowerInput.includes('thanks') ||
-      lowerInput.includes('শুকরিয়া')
-    ) {
-      return `আপনাকেও ধন্যবাদ! 🙏
-      \nধুনট.অ্যাপ আপনার সেবায় সবসময় প্রস্তুত।
-      \nআরও কোন সাহায্য প্রয়োজন হলে জানাবেন।
-      \n\nধুনট উপজেলার উন্নয়নে আমরা প্রতিশ্রুতিবদ্ধ! 🌟`;
-    }
-
-    // How to use the app
-    if (
-      lowerInput.includes('কিভাবে') ||
-      lowerInput.includes('how') ||
-      lowerInput.includes('ব্যবহার') ||
-      lowerInput.includes('use') ||
-      lowerInput.includes('help')
-    ) {
-      return `ধুনট.অ্যাপ ব্যবহারের নিয়ম:
-      \n📱 হোম পেজ:
-      \n• ক্যাটাগরি দেখুন (৩৫+ ধরনের সেবা)
-      \n• সার্চ বক্স ব্যবহার করুন
-      \n• নোটিশ মার্কি দেখুন
-      \n\n🔍 সেবা খোঁজার পদ্ধতি:
-      \n• ক্যাটাগরিতে ক্লিক করুন
-      \n• ফিল্টার ব্যবহার করুন
-      \n• প্রয়োজনীয় তথ্য দেখুন
-      \n• সরাসরি যোগাযোগ করুন
-      \n\n💡 টিপস: নিয়মিত অ্যাপ চেক করুন নতুন সেবার জন্য!`;
+      return `Md Ridoan Mahmud Zisan's Certifications & Achievements:
+      \n🏅 Academic Olympiads:
+      \n- Zero Olympiad (UN SDGs & climate action) - Semi-Final
+      \n- Bangladesh AI Olympiad - Semi-Final
+      \n- ICT Olympiad Bangladesh - Semi-Final
+      \n- Math Olympiad - Selective Round
+      
+      \n📜 Professional Certifications:
+      \n- AI, Machine Learning & Cyber Security (Simplilearn)
+      \n- Complete Web Development (Programming Hero)
+      \n- Digital Marketing (HubSpot Academy)
+      \n- Corporate Skills (10 Minute School)`;
     }
 
     // Contact information
     if (
-      lowerInput.includes('যোগাযোগ') ||
       lowerInput.includes('contact') ||
-      lowerInput.includes('ফোন') ||
+      lowerInput.includes('email') ||
       lowerInput.includes('phone') ||
-      lowerInput.includes('ইমেইল') ||
-      lowerInput.includes('email')
+      lowerInput.includes('address') ||
+      lowerInput.includes('reach') ||
+      lowerInput.includes('connect')
     ) {
-      return `যোগাযোগ করুন:
-      \n📞 হটলাইন: ০১৭১২৫২৫৯১০
-      \n📧 ইমেইল: ridoan.zisan@gmail.com
-      \n🌐 ওয়েবসাইট: dhunat.app
-      \n📍 ঠিকানা: ধুনট, বগুড়া
-      \n\n💬 ফিডব্যাক ও পরামর্শ:
-      \n• "আমার অ্যাপ" পেজে যান
-      \n• যোগাযোগ ফর্ম পূরণ করুন
-      \n• আপনার মতামত জানান
-      \n\nআমরা আপনার মতামতকে গুরুত্ব দিই! 🤝`;
+      return `You can contact Md Ridoan Mahmud Zisan through:
+      \n📧 Email: ridoan.zisan@gmail.com
+      \n📞 Phone: +8801712525910
+      \n📍 Location: Bogura, Bangladesh
+      \n🔗 LinkedIn: https://linkedin.com/in/ridoan2007
+      \n\nYou can also use the email button in the bottom right corner to send him a message directly.`;
     }
 
-    // Emergency services
+    // Volunteer work
     if (
-      lowerInput.includes('জরুরি') ||
-      lowerInput.includes('emergency') ||
-      lowerInput.includes('এম্বুলেন্স') ||
-      lowerInput.includes('ambulance') ||
-      lowerInput.includes('ফায়ার') ||
-      lowerInput.includes('fire')
+      lowerInput.includes('volunteer') ||
+      lowerInput.includes('blood') ||
+      lowerInput.includes('donation') ||
+      lowerInput.includes('bobdo')
     ) {
-      return `🚨 জরুরি সেবা:
-      \n📞 জাতীয় জরুরি সেবা: ৯৯৯
-      \n🚑 এম্বুলেন্স: ১০২
-      \n👮 পুলিশ: ১০০
-      \n🚒 ফায়ার সার্ভিস: ১৯৯
-      \n\n🏥 স্থানীয় জরুরি সেবা:
-      \n• হাসপাতাল ও ক্লিনিক
-      \n• রক্তদাতা তালিকা
-      \n• ডাক্তারের জরুরি নম্বর
-      \n\n⚠️ জরুরি অবস্থায় প্রথমে ৯৯৯ নম্বরে কল করুন!`;
+      return `Md Ridoan Mahmud Zisan's Volunteer Work:
+      \n🩸 Bogura Online Blood Donation Organization
+      \n- Role: Volunteer & Developer (2023-Present)
+      \n- Responsibilities:
+      \n  • Developed blood donor platform serving 68k+ members
+      \n  • Implemented digital system reducing response time by 40%
+      \n  • First aid and CPR training
+      \n  • Organizing donation campaigns
+      \n\n🔗 Blood Management App: https://bobdo.netlify.app`;
+    }
+
+    // Family information
+    if (
+      lowerInput.includes('family') ||
+      lowerInput.includes('father') ||
+      lowerInput.includes('mother') ||
+      lowerInput.includes('parent') ||
+      lowerInput.includes('sibling')
+    ) {
+      return `Md Ridoan Mahmud Zisan's Family:
+      \n👨‍👩‍👧‍👦 Family Members:
+      \n- Father: Md Rokibul Hasan Shekh
+      \n- Mother: Mst. Zosna Khatun
+      \n- Siblings: 1 Younger Sister`;
+    }
+
+    // Basic greetings
+    if (
+      lowerInput.includes('hello') ||
+      lowerInput.includes('hi') ||
+      lowerInput.includes('hey')
+    ) {
+      return "Hello there! I'm Ghost AI, here to tell you about Md Ridoan Mahmud Zisan. How can I help you today?\n\nYou can ask about:\n- His education\n- Skills\n- Projects\n- Certifications\n- Volunteer work\n- Contact information\n- Or anything else!";
+    }
+
+    // Thank you responses
+    if (lowerInput.includes('thank') || lowerInput.includes('thanks')) {
+      return "You're welcome! Let me know if you need any more information about Md Ridoan Mahmud Zisan.";
+    }
+
+    // Age information
+    if (
+      lowerInput.includes('age') ||
+      lowerInput.includes('old') ||
+      lowerInput.includes('birth')
+    ) {
+      const birthDate = new Date('2007-12-31');
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+
+      if (
+        monthDiff < 0 ||
+        (monthDiff === 0 && today.getDate() < birthDate.getDate())
+      ) {
+        age--;
+      }
+
+      return `Md Ridoan Mahmud Zisan is ${age} years old (born December 31, 2007).`;
+    }
+
+    // Blood group
+    if (lowerInput.includes('blood') && lowerInput.includes('group')) {
+      return "Md Ridoan Mahmud Zisan's blood group is B+ (B positive).";
     }
 
     return null;
@@ -307,8 +244,52 @@ export const LiveChat = () => {
     scrollToBottom();
   }, [messages, isLoading]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        // Don't close chat when clicking outside
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const callAPI = async (prompt: string) => {
+    setIsLoading(true);
+
+    // Check for constant replies first
+    const constantReply = getConstantReply(prompt);
+    if (constantReply) {
+      return constantReply;
+    }
+
+    try {
+      const apiUrl =
+        'https://backend.buildpicoapps.com/aero/run/llm-api?pk=v1-Z0FBQUFBQm5HUEtMSjJkakVjcF9IQ0M0VFhRQ0FmSnNDSHNYTlJSblE0UXo1Q3RBcjFPcl9YYy1OZUhteDZWekxHdWRLM1M1alNZTkJMWEhNOWd4S1NPSDBTWC12M0U2UGc9PQ==';
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt }),
+      });
+
+      const data = await response.json();
+      return data.status === 'success'
+        ? data.text
+        : 'Sorry, I could not process your request.';
+    } catch (error) {
+      console.error('API Error:', error);
+      return 'Sorry, there was an error processing your request.';
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -324,13 +305,9 @@ export const LiveChat = () => {
 
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
-    setIsLoading(true);
 
-    // Get constant reply
-    const response = getConstantReply(userMessage.content) || 
-      'দুঃখিত, এই বিষয়ে আমার কাছে তথ্য নেই। অনুগ্রহ করে অন্য কিছু জিজ্ঞাসা করুন অথবা "সাহায্য" লিখুন।';
-
-    setTimeout(() => {
+    try {
+      const response = await callAPI(userMessage.content);
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: response,
@@ -338,128 +315,122 @@ export const LiveChat = () => {
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, aiMessage]);
+    } catch (error) {
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content:
+          'Sorry, I could not connect to the server. Please try again later.',
+        role: 'assistant',
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
       inputRef.current?.focus();
-    }, 800);
+    }
   };
 
-  // Modern chat icon component
-  const ChatIcon = ({ size = 24, className = '' }) => (
-    <MessageCircle 
-      size={size} 
-      className={`${className}`}
-    />
+  // Realistic ghost icon component with animation
+  const GhostIcon = ({ size = 24, className = '', isFloating = true }) => (
+    <svg 
+      className={`ghost-icon ${className} ${isFloating ? 'animate-float' : ''}`}
+      width={size} 
+      height={size} 
+      viewBox="0 0 24 24"
+    >
+      <path 
+        d="M12 2C6.48 2 2 6.48 2 12v6c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-6c0-5.52-4.48-10-10-10zm0 18H4v-6c0-4.41 3.59-8 8-8s8 3.59 8 8v6h-8zm-4-9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm8 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm-4-5c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z" 
+        fill="currentColor"
+      />
+      <circle cx="9" cy="13" r="1.5" fill="currentColor" />
+      <circle cx="15" cy="13" r="1.5" fill="currentColor" />
+      <path 
+        d="M10 17h4v1.5c0 .83-.67 1.5-1.5 1.5h-1c-.83 0-1.5-.67-1.5-1.5V17z" 
+        fill="currentColor"
+      />
+    </svg>
   );
 
   return (
     <div
-      className="fixed bottom-4 right-4 flex flex-col items-end gap-2 z-50"
+      className="fixed bottom-6 right-6 flex flex-col items-end gap-2 z-[9999]"
       ref={containerRef}
     >
-      {/* Floating Chat Button */}
+      {/* Main Ghost Button */}
       <button
         onClick={() => setIsChatOpen(true)}
-        className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 sm:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
-        title="চ্যাট করুন"
+        className="bg-purple-700 text-white p-4 rounded-full shadow-lg hover:bg-purple-800 transition-colors duration-300"
+        title="Open Ghost AI"
         style={{
-          boxShadow: '0 8px 25px rgba(59, 130, 246, 0.4)'
+          boxShadow: '0 0 15px rgba(124, 58, 237, 0.7)'
         }}
       >
-        <ChatIcon size={20} className="sm:w-6 sm:h-6" />
-        <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+        <GhostIcon size={24} isFloating={false} />
       </button>
 
       {/* Chat Window */}
       {isChatOpen && (
-        <div className="fixed inset-0 sm:relative sm:inset-auto sm:bottom-0 sm:right-0 sm:w-80 lg:w-96 bg-white rounded-none sm:rounded-xl shadow-2xl z-50 flex flex-col max-h-screen sm:max-h-[500px] border-0 sm:border border-gray-200">
+        <div className="fixed bottom-5 right-6 w-100 max-w-[calc(101vw-3rem)] bg-gray-900 rounded-lg shadow-xl z-[9999] flex flex-col max-h-[440px] border border-purple-500">
           {/* Chat Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 sm:p-4 rounded-none sm:rounded-t-xl flex justify-between items-center border-b border-blue-500">
+          <div className="bg-purple-800 text-white p-3 rounded-t-lg flex justify-between items-center border-b border-purple-500">
             <div className="flex items-center gap-3">
-              <div className="relative">
-                <ChatIcon className="w-6 h-6" />
-                <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></div>
-              </div>
-              <div>
-                <h2 className="font-bold text-lg">ধুনট সহায়ক</h2>
-                <p className="text-xs text-blue-100">অনলাইন</p>
-              </div>
+              <GhostIcon className="w-6 h-6" isFloating={false} />
+              <h2 className="font-bold text-lg">Ghost AI</h2>
             </div>
             <button
               onClick={() => setIsChatOpen(false)}
-              className="text-white/80 hover:text-white transition-colors p-1 hover:bg-white/10 rounded"
-              aria-label="চ্যাট বন্ধ করুন"
+              className="text-white/70 hover:text-white transition-colors"
+              aria-label="Close chat"
             >
               <X size={20} />
             </button>
           </div>
 
           {/* Messages Container */}
-          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 bg-gray-50">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[300px] max-h-[400px] bg-gray-800">
             {messages.length === 0 && (
-              <div className="text-center mt-8">
+              <div className="text-center text-purple-100 mt-8">
                 <div className="mb-4">
-                  <ChatIcon className="w-12 h-12 mx-auto text-blue-500" />
+                  <GhostIcon className="w-16 h-16 mx-auto text-purple-300" />
                 </div>
-                <p className="text-xl font-medium text-gray-800">স্বাগতম! 👋</p>
-                <p className="text-gray-600 mt-2 text-sm">
-                  ধুনট.অ্যাপ সম্পর্কে যেকোনো প্রশ্ন করুন
+                <p className="text-xl font-medium">Boo! 👻</p>
+                <p className="text-purple-200 mt-2">
+                  I'm Ghost AI. Ask me anything about Md Ridoan Mahmud Zisan
                 </p>
-                <div className="mt-4 flex flex-wrap gap-2 justify-center">
-                  <button
-                    onClick={() => setInput('সেবা')}
-                    className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs hover:bg-blue-200 transition-colors"
-                  >
-                    সেবাসমূহ
-                  </button>
-                  <button
-                    onClick={() => setInput('যোগাযোগ')}
-                    className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs hover:bg-green-200 transition-colors"
-                  >
-                    যোগাযোগ
-                  </button>
-                  <button
-                    onClick={() => setInput('ব্যবহার')}
-                    className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs hover:bg-purple-200 transition-colors"
-                  >
-                    কিভাবে ব্যবহার করবেন
-                  </button>
-                </div>
               </div>
             )}
 
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex items-start gap-2 ${
+                className={`flex items-start gap-3 ${
                   message.role === 'user' ? 'flex-row-reverse' : ''
                 }`}
               >
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                  className={`w-9 h-9 rounded-full flex items-center justify-center ${
                     message.role === 'user' 
                       ? 'bg-blue-500' 
-                      : 'bg-gradient-to-r from-blue-500 to-purple-500'
+                      : 'bg-purple-600 shadow-[0_0_8px_rgba(147,51,234,0.6)]'
                   }`}
                 >
                   {message.role === 'user' ? (
-                    <User className="w-4 h-4 text-white" />
+                    <User className="w-5 h-5 text-white" />
                   ) : (
-                    <ChatIcon size={16} className="text-white" />
+                    <GhostIcon className="w-5 h-5 text-white" isFloating={false} />
                   )}
                 </div>
                 <div
-                  className={`rounded-2xl px-3 py-2 max-w-[85%] sm:max-w-[75%] ${
+                  className={`rounded-xl px-4 py-3 max-w-[80%] ${
                     message.role === 'user'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-white text-gray-800 border border-gray-200 shadow-sm'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-purple-700 text-purple-50 shadow-[0_0_8px_rgba(147,51,234,0.3)]'
                   }`}
                 >
-                  <p className="text-sm whitespace-pre-wrap leading-relaxed">
+                  <p className="text-sm whitespace-pre-wrap">
                     {message.content}
                   </p>
-                  <p className={`text-xs mt-1 ${
-                    message.role === 'user' ? 'text-blue-100' : 'text-gray-500'
-                  }`}>
+                  <p className="text-xs mt-2 opacity-70 text-right">
                     {format(message.timestamp, 'h:mm a')}
                   </p>
                 </div>
@@ -467,15 +438,21 @@ export const LiveChat = () => {
             ))}
 
             {isLoading && (
-              <div className="flex items-start gap-2">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
-                  <ChatIcon size={16} className="text-white" />
+              <div className="flex items-start gap-3">
+                <div className="w-9 h-9 rounded-full bg-purple-600 flex items-center justify-center shadow-[0_0_8px_rgba(147,51,234,0.6)]">
+                  <GhostIcon className="w-5 h-5 text-white" isFloating={false} />
                 </div>
-                <div className="bg-white rounded-2xl px-3 py-2 border border-gray-200">
-                  <div className="flex gap-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                <div className="bg-purple-700 rounded-xl px-4 py-3 shadow-[0_0_8px_rgba(147,51,234,0.3)]">
+                  <div className="flex gap-2">
+                    <div className="animate-bounce">
+                      <div className="w-2 h-2 bg-purple-300 rounded-full"></div>
+                    </div>
+                    <div className="animate-bounce" style={{ animationDelay: '0.2s' }}>
+                      <div className="w-2 h-2 bg-purple-300 rounded-full"></div>
+                    </div>
+                    <div className="animate-bounce" style={{ animationDelay: '0.4s' }}>
+                      <div className="w-2 h-2 bg-purple-300 rounded-full"></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -485,31 +462,54 @@ export const LiveChat = () => {
           </div>
 
           {/* Input Form */}
-          <div className="border-t border-gray-200 p-3 sm:p-4 bg-white rounded-none sm:rounded-b-xl">
+          <div className="border-t border-purple-700 p-3 bg-gray-900 rounded-b-lg">
             <form onSubmit={handleSubmit} className="flex gap-2">
               <input
                 ref={inputRef}
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="আপনার প্রশ্ন লিখুন..."
+                placeholder="Ask the ghost..."
                 disabled={isLoading}
-                className="flex-1 rounded-full bg-gray-100 border-0 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed placeholder-gray-500"
+                className="flex-1 rounded-lg bg-gray-800 text-white border border-purple-700 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed placeholder-purple-300"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isLoading}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full px-3 py-2 hover:from-blue-700 hover:to-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 shadow-md hover:shadow-lg"
+                className="bg-purple-600 text-white rounded-lg px-4 py-2 hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-[0_0_8px_rgba(147,51,234,0.5)]"
               >
                 <Send className="w-4 h-4" />
               </button>
             </form>
-            <p className="text-xs text-gray-500 mt-2 text-center">
-              ধুনট.অ্যাপ আপনার সেবায় ২৪/৭
-            </p>
           </div>
         </div>
       )}
+
+      {/* Add CSS animations */}
+      <style>{`
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-8px);
+          }
+        }
+        .animate-float {
+          animation: float 2.5s ease-in-out infinite;
+        }
+        .animate-bounce {
+          animation: bounce 1.5s infinite;
+        }
+        @keyframes bounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-5px);
+          }
+        }
+      `}</style>
     </div>
   );
 };

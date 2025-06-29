@@ -1,146 +1,138 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Calendar, Tag, User } from 'lucide-react';
+
+import { Element } from 'react-scroll';
+import { PenTool, Heart, MessageCircle, Share } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { blogPosts } from '../data/blogData';
 
 interface BlogProps {
+  onBack?: () => void;
   language: 'en' | 'bn';
-  onBack: () => void;
 }
 
-const Blog: React.FC<BlogProps> = ({ language, onBack }) => {
-  const [selectedPost, setSelectedPost] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
+const Blog = ({ onBack, language = 'en' }: BlogProps) => {
+  const pageTitle = {
+    en: 'Poetry World',
+    bn: 'কবিতার ভুবন'
+  };
 
-  const filteredPosts = blogPosts.filter(post =>
-    post.title[language].toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.content[language].toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.tags[language].some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
-
-  const selectedPostData = selectedPost 
-    ? blogPosts.find(post => post.id === selectedPost)
-    : null;
-
-  if (selectedPostData) {
-    return (
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <button
-            onClick={() => setSelectedPost(null)}
-            className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-6 transition-colors"
-          >
-            <ArrowLeft size={20} />
-            {language === 'bn' ? 'ফিরে যান' : 'Back to Blog'}
-          </button>
-
-          <article className="bg-white rounded-xl shadow-sm p-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              {selectedPostData.title[language]}
-            </h1>
-            
-            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-6">
-              <div className="flex items-center gap-1">
-                <User size={16} />
-                {selectedPostData.author[language]}
-              </div>
-              <div className="flex items-center gap-1">
-                <Calendar size={16} />
-                {new Date(selectedPostData.date).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}
-              </div>
-            </div>
-
-            <div className="flex flex-wrap gap-2 mb-8">
-              {selectedPostData.tags[language].map((tag, index) => (
-                <span
-                  key={index}
-                  className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
-                >
-                  <Tag size={12} />
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            <div className="prose max-w-none">
-              <p className="text-gray-700 leading-relaxed whitespace-pre-line text-lg">
-                {selectedPostData.content[language]}
-              </p>
-            </div>
-          </article>
-        </div>
-      </div>
-    );
-  }
+  const pageSubtitle = {
+    en: 'Rhythmic expressions of feelings arising from the depths of the heart',
+    bn: 'হৃদয়ের গভীর থেকে উঠে আসা অনুভূতির ছন্দময় প্রকাশ'
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4 max-w-6xl">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            {language === 'bn' ? '📝 ব্লগ' : '📝 Blog'}
-          </h1>
-          <p className="text-gray-600 text-lg">
-            {language === 'bn' 
-              ? 'কবিতা, চিন্তাভাবনা এবং জীবনের গল্প' 
-              : 'Poetry, thoughts and life stories'
-            }
-          </p>
-        </div>
-
-        <div className="mb-8">
-          <input
-            type="text"
-            placeholder={language === 'bn' ? 'ব্লগ খুঁজুন...' : 'Search blogs...'}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full max-w-md mx-auto block px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPosts.map((post) => (
-            <div
-              key={post.id}
-              onClick={() => setSelectedPost(post.id)}
-              className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer p-6 border border-gray-100"
-            >
-              <h2 className="text-xl font-semibold text-gray-900 mb-3 line-clamp-2">
-                {post.title[language]}
-              </h2>
-              
-              <p className="text-gray-600 mb-4 line-clamp-3">
-                {post.content[language].substring(0, 120)}...
+    <Element name="blog">
+      <div className="min-h-screen bg-gray-50 pt-16">
+        <div className="container mx-auto px-4 py-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-2xl mx-auto"
+          >
+            {/* Header */}
+            <div className="text-center mb-8">
+              <motion.div
+                initial={{ scale: 0.8 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="inline-flex items-center justify-center w-12 h-12 bg-purple-50 rounded-full mb-4"
+              >
+                <PenTool className="w-6 h-6 text-purple-600" />
+              </motion.div>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">{pageTitle[language]}</h1>
+              <p className="text-gray-600 max-w-xl mx-auto text-sm md:text-base">
+                {pageSubtitle[language]}
               </p>
-              
-              <div className="flex items-center justify-between text-sm text-gray-500">
-                <div className="flex items-center gap-1">
-                  <Calendar size={14} />
-                  {new Date(post.date).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}
-                </div>
-                <div className="flex flex-wrap gap-1">
-                  {post.tags[language].slice(0, 2).map((tag, index) => (
-                    <span
-                      key={index}
-                      className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
             </div>
-          ))}
-        </div>
 
-        {filteredPosts.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">
-              {language === 'bn' ? 'কোন ব্লগ পোস্ট পাওয়া যায়নি' : 'No blog posts found'}
-            </p>
-          </div>
-        )}
+            {/* Blog Posts - Facebook Style */}
+            <div className="space-y-4">
+              {blogPosts.map((post, index) => (
+                <motion.article
+                  key={post.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden"
+                >
+                  {/* Post Header */}
+                  <div className="p-3 md:p-4 border-b border-gray-100">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
+                        <span className="text-white font-semibold text-xs md:text-sm">
+                          {post.author[language].split(' ')[0].charAt(0)}
+                        </span>
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-gray-900 text-sm">
+                          {post.author[language]}
+                        </h3>
+                        <p className="text-gray-500 text-xs">
+                          {new Date(post.date).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Post Content */}
+                  <div className="p-3 md:p-4">
+                    <h2 className="text-base md:text-lg font-semibold text-gray-900 mb-2">{post.title[language]}</h2>
+                    <div className="text-gray-700 leading-relaxed whitespace-pre-line font-bengali mb-3 text-sm md:text-base">
+                      {post.content[language]}
+                    </div>
+                    
+                    {/* Tags */}
+                    <div className="flex gap-1 md:gap-2 flex-wrap mb-3">
+                      {post.tags[language].map((tag, tagIndex) => (
+                        <span
+                          key={tagIndex}
+                          className="bg-purple-50 text-purple-700 px-2 py-1 rounded-full text-xs font-medium"
+                        >
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Post Actions - Facebook Style */}
+                  <div className="border-t border-gray-100 px-3 md:px-4 py-2 md:py-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4 md:space-x-6">
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="flex items-center space-x-1 text-gray-600 hover:text-red-500 transition-colors"
+                        >
+                          <Heart size={16} />
+                          <span className="text-xs md:text-sm font-medium">Like</span>
+                        </motion.button>
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="flex items-center space-x-1 text-gray-600 hover:text-blue-500 transition-colors"
+                        >
+                          <MessageCircle size={16} />
+                          <span className="text-xs md:text-sm font-medium">Comment</span>
+                        </motion.button>
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="flex items-center space-x-1 text-gray-600 hover:text-green-500 transition-colors"
+                        >
+                          <Share size={16} />
+                          <span className="text-xs md:text-sm font-medium">Share</span>
+                        </motion.button>
+                      </div>
+                    </div>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+          </motion.div>
+        </div>
       </div>
-    </div>
+    </Element>
   );
 };
 

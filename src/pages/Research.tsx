@@ -1,159 +1,83 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Calendar, BookOpen, User } from 'lucide-react';
+
+import { Element } from 'react-scroll';
+import { BookOpen } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { researchPosts } from '../data/researchData';
 
 interface ResearchProps {
+  onBack?: () => void;
   language: 'en' | 'bn';
-  onBack: () => void;
 }
 
-const Research: React.FC<ResearchProps> = ({ language }) => {
-  const [selectedPost, setSelectedPost] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+const Research = ({ onBack, language = 'en' }: ResearchProps) => {
+  const pageTitle = {
+    en: 'Research',
+    bn: 'গবেষণা'
+  };
 
-  const categories = ['all', ...Array.from(new Set(researchPosts.map(post => post.category[language])))];
-
-  const filteredPosts = researchPosts.filter(post => {
-    const matchesSearch = post.title[language].toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.content[language].toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || post.category[language] === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
-
-  const selectedPostData = selectedPost 
-    ? researchPosts.find(post => post.id === selectedPost)
-    : null;
-
-  if (selectedPostData) {
-    return (
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <button
-            onClick={() => setSelectedPost(null)}
-            className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-6 transition-colors"
-          >
-            <ArrowLeft size={20} />
-            {language === 'bn' ? 'ফিরে যান' : 'Back to Research'}
-          </button>
-
-          <article className="bg-white rounded-xl shadow-sm p-8">
-            <div className="mb-4">
-              <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                {selectedPostData.category[language]}
-              </span>
-            </div>
-            
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              {selectedPostData.title[language]}
-            </h1>
-            
-            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-8">
-              <div className="flex items-center gap-1">
-                <User size={16} />
-                {selectedPostData.author[language]}
-              </div>
-              <div className="flex items-center gap-1">
-                <Calendar size={16} />
-                {new Date(selectedPostData.date).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}
-              </div>
-            </div>
-
-            <div className="prose max-w-none">
-              <p className="text-gray-700 leading-relaxed text-lg">
-                {selectedPostData.content[language]}
-              </p>
-            </div>
-          </article>
-        </div>
-      </div>
-    );
-  }
+  const pageSubtitle = {
+    en: 'My research work and academic contributions from an Islamic perspective on technology and development',
+    bn: 'ইসলামিক দৃষ্টিভঙ্গি থেকে প্রযুক্তি এবং উন্নয়নে আমার গবেষণা কাজ এবং একাডেমিক অবদান'
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4 max-w-6xl">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            {language === 'bn' ? '🔬 গবেষণা' : '🔬 Research'}
-          </h1>
-          <p className="text-gray-600 text-lg">
-            {language === 'bn' 
-              ? 'ইসলামিক শিক্ষা ও আধুনিক বিজ্ঞানের সমন্বয়' 
-              : 'Integration of Islamic education and modern science'
-            }
-          </p>
-        </div>
-
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <input
-            type="text"
-            placeholder={language === 'bn' ? 'গবেষণা খুঁজুন...' : 'Search research...'}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-          
-          <select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-[200px]"
+    <Element name="research">
+      <div className="min-h-screen bg-gray-50 pt-16">
+        <div className="container mx-auto px-4 py-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-4xl mx-auto"
           >
-            <option value="all">
-              {language === 'bn' ? 'সব ক্যাটাগরি' : 'All Categories'}
-            </option>
-            {categories.slice(1).map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPosts.map((post) => (
-            <div
-              key={post.id}
-              onClick={() => setSelectedPost(post.id)}
-              className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer p-6 border border-gray-100"
-            >
-              <div className="mb-3">
-                <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-medium">
-                  {post.category[language]}
-                </span>
-              </div>
-              
-              <h2 className="text-xl font-semibold text-gray-900 mb-3 line-clamp-2">
-                {post.title[language]}
-              </h2>
-              
-              <p className="text-gray-600 mb-4 line-clamp-3">
-                {post.content[language].substring(0, 120)}...
+            {/* Header */}
+            <div className="text-center mb-8">
+              <motion.div
+                initial={{ scale: 0.8 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="inline-flex items-center justify-center w-12 h-12 bg-blue-50 rounded-full mb-4"
+              >
+                <BookOpen className="w-6 h-6 text-blue-600" />
+              </motion.div>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">{pageTitle[language]}</h1>
+              <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base">
+                {pageSubtitle[language]}
               </p>
-              
-              <div className="flex items-center justify-between text-sm text-gray-500">
-                <div className="flex items-center gap-1">
-                  <Calendar size={14} />
-                  {new Date(post.date).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}
-                </div>
-                <div className="flex items-center gap-1">
-                  <BookOpen size={14} />
-                  {language === 'bn' ? 'পড়ুন' : 'Read'}
-                </div>
-              </div>
             </div>
-          ))}
-        </div>
 
-        {filteredPosts.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">
-              {language === 'bn' ? 'কোন গবেষণা পোস্ট পাওয়া যায়নি' : 'No research posts found'}
-            </p>
-          </div>
-        )}
+            {/* Research Posts */}
+            <div className="space-y-4">
+              {researchPosts.map((post, index) => (
+                <motion.article
+                  key={post.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden"
+                >
+                  <div className="p-4 md:p-6">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="inline-block bg-blue-50 text-blue-700 px-2 py-1 rounded-full text-xs font-medium">
+                        {post.category[language]}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {new Date(post.date).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}
+                      </span>
+                    </div>
+                    <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-2">{post.title[language]}</h2>
+                    <p className="text-gray-700 leading-relaxed mb-3 text-sm md:text-base">{post.content[language]}</p>
+                    <div className="text-xs md:text-sm text-gray-600">
+                      <span>{post.author[language]}</span>
+                    </div>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+          </motion.div>
+        </div>
       </div>
-    </div>
+    </Element>
   );
 };
 
