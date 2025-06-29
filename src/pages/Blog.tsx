@@ -1,15 +1,13 @@
-
 import { Element } from 'react-scroll';
 import { PenTool, Heart, MessageCircle, Share } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { blogPosts } from '../data/blogData';
 
 interface BlogProps {
-  onBack?: () => void;
   language: 'en' | 'bn';
 }
 
-const Blog = ({ onBack, language = 'en' }: BlogProps) => {
+const Blog = ({ language = 'en' }: BlogProps) => {
   const pageTitle = {
     en: 'Poetry World',
     bn: 'কবিতার ভুবন'

@@ -1,15 +1,13 @@
-
 import { Element } from 'react-scroll';
 import { BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { researchPosts } from '../data/researchData';
 
 interface ResearchProps {
-  onBack?: () => void;
   language: 'en' | 'bn';
 }
 
-const Research = ({ onBack, language = 'en' }: ResearchProps) => {
+const Research = ({ language = 'en' }: ResearchProps) => {
   const pageTitle = {
     en: 'Research',
     bn: 'গবেষণা'
