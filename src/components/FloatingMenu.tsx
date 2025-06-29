@@ -1,15 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import {
-  Send,
-  User,
-  X,
-  Minimize2,
-  Maximize2,
-  MessageSquare,
-  Bot,
-  Sparkles,
-} from 'lucide-react';
+import { Send, User, X, Bot, Sparkles } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface Message {
@@ -24,13 +15,12 @@ export const LiveChat = () => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Comprehensive constant replies based on the complete portfolio
+  // Enhanced constant replies with complete portfolio information
   const getConstantReply = (userInput: string): string | null => {
     const lowerInput = userInput.toLowerCase();
 
@@ -41,21 +31,27 @@ export const LiveChat = () => {
       lowerInput.includes('creator') ||
       lowerInput.includes('ridoan') ||
       lowerInput.includes('zisan') ||
-      lowerInput.includes('about')
+      lowerInput.includes('about') ||
+      lowerInput.includes('কে') ||
+      lowerInput.includes('পরিচয়')
     ) {
-      return `👋 I'm Md Ridoan Mahmud Zisan from Bogura, Bangladesh!
+      return `🌟 আমি মোহাম্মদ রিদোয়ান মাহমুদ জিসান!
 
-🎓 **Current Status:** HSC Graduate (2024) with perfect GPA 5.00
-💻 **Role:** Student, Web Developer & Community Volunteer
-🌟 **Passion:** Creating digital solutions for community development
+👤 **ব্যক্তিগত তথ্য:**
+📅 জন্ম: ৩১ ডিসেম্বর, ২০০৭ (বয়স: ১৬)
+🏠 ঠিকানা: বগুড়া, বাংলাদেশ
+🩸 রক্তের গ্রুপ: বি পজিটিভ (B+)
+☪️ ধর্ম: ইসলাম
 
-**Quick Facts:**
-📅 Born: December 31, 2007 (Age: 16)
-🩸 Blood Group: B+
-🏠 Location: Bogura, Bangladesh
-☪️ Religion: Islam (Values: Humanity & Service)
+🎓 **শিক্ষাগত যোগ্যতা:**
+• এইচএসসি (২০২৪) - জিপিএ ৫.০০ 
+• এসএসসি (২০২২) - জিপিএ ৫.০০
 
-**Mission:** Using technology to serve humanity and create positive impact in society.`;
+💼 **পেশা:** ছাত্র, ওয়েব ডেভেলপার ও কমিউনিটি সেবক
+
+🌟 **লক্ষ্য:** প্রযুক্তির মাধ্যমে মানবতার সেবা করা
+
+আমার সম্পর্কে আরও জানতে চাইলে প্রশ্ন করুন!`;
     }
 
     // Contact Information
@@ -65,57 +61,26 @@ export const LiveChat = () => {
       lowerInput.includes('phone') ||
       lowerInput.includes('reach') ||
       lowerInput.includes('connect') ||
-      lowerInput.includes('message')
+      lowerInput.includes('যোগাযোগ') ||
+      lowerInput.includes('ইমেইল') ||
+      lowerInput.includes('ফোন')
     ) {
-      return `📬 **Get in Touch with Ridoan:**
+      return `📞 **যোগাযোগের তথ্য:**
 
-📧 **Email:** ridoan.zisan@gmail.com
-📞 **Phone:** +8801712525910
-📍 **Address:** Bogura, Bangladesh
-🔗 **LinkedIn:** https://linkedin.com/in/ridoan2007
+📧 **ইমেইল:** ridoan.zisan@gmail.com
+📱 **মোবাইল:** +৮৮০১৭১২৫২৫৯১০
+📍 **ঠিকানা:** বগুড়া, বাংলাদেশ
+🔗 **লিংকডইন:** https://linkedin.com/in/ridoan2007
 
-**Preferred Contact Methods:**
-✅ Email (Best for detailed discussions)
-✅ Phone/WhatsApp (For urgent matters)
-✅ LinkedIn (Professional networking)
+**যোগাযোগের উপায়:**
+✅ ইমেইল (বিস্তারিত আলোচনার জন্য)
+✅ ফোন/হোয়াটসঅ্যাপ (জরুরি বিষয়ে)
+✅ লিংকডইন (পেশাদার নেটওয়ার্কিং)
 
-**Response Time:** Usually within 24 hours
-**Available:** 9 AM - 10 PM (Bangladesh Time)
+**সাড়া দেওয়ার সময়:** সাধারণত ২৪ ঘন্টার মধ্যে
+**সক্রিয় সময়:** সকাল ৯টা - রাত ১০টা (বাংলাদেশ সময়)
 
-Feel free to reach out for collaborations, projects, or just a friendly chat! 😊`;
-    }
-
-    // Education Details
-    if (
-      lowerInput.includes('education') ||
-      lowerInput.includes('study') ||
-      lowerInput.includes('school') ||
-      lowerInput.includes('college') ||
-      lowerInput.includes('academic') ||
-      lowerInput.includes('hsc') ||
-      lowerInput.includes('ssc')
-    ) {
-      return `🎓 **Educational Journey:**
-
-**Higher Secondary Certificate (HSC) - 2024**
-🏫 Institution: Karatoa Multimedia School and College
-📊 Result: GPA 5.00/5.00 ⭐
-📚 Group: Science
-🔢 Major Subject: Higher Mathematics
-🏆 Achievement: Perfect scores in all subjects
-
-**Secondary School Certificate (SSC) - 2022**  
-🏫 Institution: Dhunat Govt N.U. Pilot Model High School
-📊 Result: GPA 5.00/5.00 ⭐
-📚 Group: Science  
-🔢 Major Subject: Higher Mathematics
-🏆 Achievement: Consistent academic excellence
-
-**Academic Strengths:**
-• Advanced Mathematics & Problem Solving
-• Computer Science & Programming Logic
-• Scientific Research & Analysis
-• Critical Thinking & Innovation`;
+যেকোনো সহযোগিতা, প্রজেক্ট বা আড্ডার জন্য যোগাযোগ করুন! 😊`;
     }
 
     // Skills & Technical Expertise
@@ -125,37 +90,36 @@ Feel free to reach out for collaborations, projects, or just a friendly chat! �
       lowerInput.includes('programming') ||
       lowerInput.includes('web') ||
       lowerInput.includes('development') ||
-      lowerInput.includes('react') ||
-      lowerInput.includes('javascript')
+      lowerInput.includes('দক্ষতা') ||
+      lowerInput.includes('প্রযুক্তি') ||
+      lowerInput.includes('প্রোগ্রামিং')
     ) {
-      return `💻 **Technical Skills Portfolio:**
+      return `💻 **প্রযুক্তিগত দক্ষতা:**
 
-**🌐 Web Development:**
+**🌐 ওয়েব ডেভেলপমেন্ট:**
 • Frontend: HTML5, CSS3, JavaScript (ES6+)
 • Framework: React.js, Vite
 • Styling: Tailwind CSS, Responsive Design
 • Tools: Firebase, Git, VS Code
 
-**🤖 Emerging Technologies:**
-• Artificial Intelligence & Machine Learning
+**🤖 উদীয়মান প্রযুক্তি:**
+• কৃত্রিম বুদ্ধিমত্তা ও মেশিন লার্নিং
 • Python Programming
-• Data Science Fundamentals
-• Cybersecurity Basics
+• ডেটা সায়েন্স মৌলিক বিষয়
+• সাইবার নিরাপত্তা মৌলিক বিষয়
 
-**💼 Professional Skills:**
+**💼 পেশাদার দক্ষতা:**
 • Microsoft Office Suite (Expert Level)
-• Digital Marketing & SEO
-• Email Communication & Business Writing
-• Project Management & Team Collaboration
-• Problem Solving & Critical Thinking
+• ডিজিটাল মার্কেটিং ও SEO
+• ইমেইল যোগাযোগ ও ব্যবসায়িক লেখালেখি
+• প্রজেক্ট ম্যানেজমেন্ট ও টিম সহযোগিতা
 
-**🎨 Creative Skills:**
-• UI/UX Design Principles
-• Canva & Basic Photoshop
-• Content Creation & Social Media Management
+**🎨 সৃজনশীল দক্ষতা:**
+• UI/UX ডিজাইন নীতি
+• Canva ও বেসিক Photoshop
+• কন্টেন্ট তৈরি ও সোশ্যাল মিডিয়া পরিচালনা
 
-**🗣️ Languages:**
-• Bengali (Native) • English (Professional) • Basic Arabic`;
+**🗣️ ভাষা:** বাংলা (মাতৃভাষা) • ইংরেজি (পেশাদার) • বেসিক আরবি`;
     }
 
     // Projects Portfolio
@@ -165,77 +129,68 @@ Feel free to reach out for collaborations, projects, or just a friendly chat! �
       lowerInput.includes('portfolio') ||
       lowerInput.includes('bobdo') ||
       lowerInput.includes('uniconverter') ||
-      lowerInput.includes('devhub')
+      lowerInput.includes('প্রজেক্ট') ||
+      lowerInput.includes('কাজ')
     ) {
-      return `🚀 **Featured Projects:**
+      return `🚀 **গুরুত্বপূর্ণ প্রজেক্টসমূহ:**
 
-**🩸 BOBDO - Blood Donation Platform**
-• **Impact:** Serving 68,000+ community members
-• **Tech:** React.js + Firebase real-time database
-• **Features:** Donor matching, location-based search, emergency alerts
-• **Achievement:** 40% faster emergency response time
-• **Live:** https://bobdo.netlify.app
-• **Recognition:** Community impact award
+**🩸 BOBDO - রক্তদান প্ল্যাটফর্ম**
+• **প্রভাব:** ৬৮,০০০+ কমিউনিটি সদস্য সেবা প্রদান
+• **প্রযুক্তি:** React.js + Firebase রিয়েল-টাইম ডেটাবেস
+• **বৈশিষ্ট্য:** দাতা খোঁজা, অবস্থান-ভিত্তিক অনুসন্ধান, জরুরি সতর্কতা
+• **সাফল্য:** ৪০% দ্রুততর জরুরি সাড়া
+• **লাইভ:** https://bobdo.netlify.app
 
-**📐 UniConverter - Universal Unit Converter**
-• **Purpose:** 50+ measurement categories converter
-• **Tech:** Progressive Web App (PWA)
-• **Features:** Offline functionality, responsive design
-• **Users:** 1000+ monthly active users
-• **Live:** https://uniconverter.netlify.app
+**📐 UniConverter - সার্বজনীন একক রূপান্তরকারী**
+• **উদ্দেশ্য:** ৫০+ পরিমাপ বিভাগ রূপান্তরকারী
+• **প্রযুক্তি:** Progressive Web App (PWA)
+• **বৈশিষ্ট্য:** অফলাইন কার্যকারিতা, রেস্পন্সিভ ডিজাইন
+• **ব্যবহারকারী:** ১০০০+ মাসিক সক্রিয় ব্যবহারকারী
+• **লাইভ:** https://uniconverter.netlify.app
 
-**💻 DevHub - Personal Portfolio**
-• **Showcase:** Complete professional portfolio
-• **Tech:** React + TypeScript + Tailwind CSS
-• **Features:** Multi-language, dark/light mode, animations
-• **Live:** https://devhub-i.netlify.app
+**💻 DevHub - ব্যক্তিগত পোর্টফলিও**
+• **প্রদর্শনী:** সম্পূর্ণ পেশাদার পোর্টফলিও
+• **প্রযুক্তি:** React + TypeScript + Tailwind CSS
+• **বৈশিষ্ট্য:** বহুভাষিক, ডার্ক/লাইট মোড, অ্যানিমেশন
+• **লাইভ:** https://devhub-i.netlify.app
 
-**🌐 Dhunat Community Connect**
-• **Goal:** Local business & service directory
-• **Status:** In Development
-• **Impact:** Supporting local economy & connectivity`;
+**🌐 ধুনাট কমিউনিটি কানেক্ট**
+• **লক্ষ্য:** স্থানীয় ব্যবসা ও সেবা ডিরেক্টরি
+• **অবস্থা:** উন্নয়নাধীন
+• **প্রভাব:** স্থানীয় অর্থনীতি ও সংযোগ সহায়তা`;
     }
 
-    // Certificates & Achievements
+    // Education Details
     if (
-      lowerInput.includes('certificate') ||
-      lowerInput.includes('achievement') ||
-      lowerInput.includes('award') ||
-      lowerInput.includes('olympiad') ||
-      lowerInput.includes('competition') ||
-      lowerInput.includes('recognition')
+      lowerInput.includes('education') ||
+      lowerInput.includes('study') ||
+      lowerInput.includes('school') ||
+      lowerInput.includes('college') ||
+      lowerInput.includes('academic') ||
+      lowerInput.includes('শিক্ষা') ||
+      lowerInput.includes('পড়াশোনা')
     ) {
-      return `🏆 **Certifications & Achievements:**
+      return `🎓 **শিক্ষাগত পটভূমি:**
 
-**🥇 Tech Certifications:**
-• Google - Foundations of Cybersecurity
-• IBM - Python for Data Science & AI
-• IBM - Introduction to Artificial Intelligence
-• IBM - Machine Learning Fundamentals
-• Complete Web Development (Programming Hero)
+**উচ্চমাধ্যমিক সার্টিফিকেট (HSC) - ২০২৪**
+🏫 প্রতিষ্ঠান: করতোয়া মাল্টিমিডিয়া স্কুল অ্যান্ড কলেজ
+📊 ফলাফল: জিপিএ ৫.০০/৫.০০ ⭐
+📚 বিভাগ: বিজ্ঞান
+🔢 প্রধান বিষয়: উচ্চতর গণিত
+🏆 অর্জন: সকল বিষয়ে নিখুঁত নম্বর
 
-**🏅 Academic Olympiads:**
-• Bangladesh Mathematical Olympiad - Participation
-• ICT Olympiad Bangladesh - Quarter Final
-• Bangladesh AI Olympiad - Semi-Final
-• Zero Olympiad (UN SDGs) - Semi-Final
-• National General Knowledge Olympiad
+**মাধ্যমিক স্কুল সার্টিফিকেট (SSC) - ২০২২**
+🏫 প্রতিষ্ঠান: ধুনাট সরকারি এন.ইউ. পাইলট মডেল হাই স্কুল
+📊 ফলাফল: জিপিএ ৫.০০/৫.০০ ⭐
+📚 বিভাগ: বিজ্ঞান
+🔢 প্রধান বিষয়: উচ্চতর গণিত
+🏆 অর্জন: ধারাবাহিক একাডেমিক শ্রেষ্ঠত্ব
 
-**📜 Professional Skills:**
-• Digital Marketing (HubSpot Academy)
-• Business Case Solving
-• CV Writing & Interview Skills
-• Presentation & Public Speaking
-• Corporate Etiquette & Management
-• Microsoft Office Expert Level
-
-**🌍 Global Initiatives:**
-• UN Climate Change Process
-• Net Zero 101 Certification
-• Sustainable Development Goals
-• Gender Equality in Climate Action
-
-**📊 Total Certifications:** 25+ verified certificates`;
+**একাডেমিক শক্তি:**
+• উন্নত গণিত ও সমস্যা সমাধান
+• কম্পিউটার বিজ্ঞান ও প্রোগ্রামিং লজিক
+• বৈজ্ঞানিক গবেষণা ও বিশ্লেষণ
+• সমালোচনামূলক চিন্তাভাবনা ও উদ্ভাবন`;
     }
 
     // Volunteer Work & Community Service
@@ -245,112 +200,76 @@ Feel free to reach out for collaborations, projects, or just a friendly chat! �
       lowerInput.includes('service') ||
       lowerInput.includes('blood') ||
       lowerInput.includes('donation') ||
-      lowerInput.includes('social')
+      lowerInput.includes('স্বেচ্ছাসেবক') ||
+      lowerInput.includes('সমাজসেবা') ||
+      lowerInput.includes('রক্তদান')
     ) {
-      return `🤝 **Volunteer Work & Community Service:**
+      return `🤝 **স্বেচ্ছাসেবক কাজ ও সমাজসেবা:**
 
-**🩸 BOBDO - Lead Volunteer & Developer (2023-Present)**
-• **Role:** Platform Developer & Community Coordinator
-• **Impact:** 68,000+ registered community members
-• **Achievement:** 40% reduction in emergency response time
-• **Services:** Blood donation coordination, first aid training
-• **Recognition:** Outstanding volunteer service award
+**🩸 BOBDO - প্রধান স্বেচ্ছাসেবক ও ডেভেলপার (২০২৩-বর্তমান)**
+• **ভূমিকা:** প্ল্যাটফর্ম ডেভেলপার ও কমিউনিটি সমন্বয়কারী
+• **প্রভাব:** ৬৮,০০০+ নিবন্ধিত কমিউনিটি সদস্য
+• **অর্জন:** জরুরি সাড়া সময় ৪০% কমানো
+• **সেবা:** রক্তদান সমন্বয়, প্রাথমিক চিকিৎসা প্রশিক্ষণ
+• **স্বীকৃতি:** অসামান্য স্বেচ্ছাসেবক সেবা পুরস্কার
 
-**💡 Community Tech Solutions:**
-• **Digital Literacy:** Teaching elderly community members
-• **Website Development:** Free websites for local businesses
-• **Technical Support:** Computer troubleshooting & repair
+**💡 কমিউনিটি টেক সমাধান:**
+• **ডিজিটাল সাক্ষরতা:** বয়স্ক কমিউনিটি সদস্যদের শেখানো
+• **ওয়েবসাইট ডেভেলপমেন্ট:** স্থানীয় ব্যবসার জন্য বিনামূল্যে ওয়েবসাইট
+• **প্রযুক্তিগত সহায়তা:** কম্পিউটার সমস্যা সমাধান ও মেরামত
 
-**🎓 Educational Support:**
-• **Tutoring:** Mathematics & Computer Science for students
-• **Career Guidance:** CV writing & interview preparation
-• **Mentorship:** Guiding aspiring developers
+**🎓 শিক্ষামূলক সহায়তা:**
+• **টিউটরিং:** গণিত ও কম্পিউটার বিজ্ঞানে ছাত্রদের সহায়তা
+• **ক্যারিয়ার গাইডেন্স:** সিভি লেখা ও ইন্টারভিউ প্রস্তুতি
+• **মেন্টরশিপ:** উদীয়মান ডেভেলপারদের দিকনির্দেশনা
 
-**🌱 Environmental Initiatives:**
-• **Awareness Campaigns:** Climate change & sustainability
-• **Tree Plantation:** Local environmental projects
-• **Waste Management:** Community cleanliness drives
+**🌱 পরিবেশগত উদ্যোগ:**
+• **সচেতনতা প্রচার:** জলবায়ু পরিবর্তন ও টেকসই উন্নয়ন
+• **বৃক্ষরোপণ:** স্থানীয় পরিবেশগত প্রকল্প
+• **বর্জ্য ব্যবস্থাপনা:** কমিউনিটি পরিচ্ছন্নতা অভিযান
 
-**Values:** "Service to humanity is service to Allah" - This drives all my volunteer efforts.`;
+**মূল্যবোধ:** "মানবতার সেবাই আল্লাহর সেবা" - এই নীতি আমার সকল স্বেচ্ছাসেবক কাজের চালিকাশক্তি।`;
     }
 
-    // Family & Personal Information
+    // Future Goals & Career Plans
     if (
-      lowerInput.includes('family') ||
-      lowerInput.includes('personal') ||
-      lowerInput.includes('father') ||
-      lowerInput.includes('mother') ||
-      lowerInput.includes('parent') ||
-      lowerInput.includes('background')
+      lowerInput.includes('future') ||
+      lowerInput.includes('goal') ||
+      lowerInput.includes('plan') ||
+      lowerInput.includes('career') ||
+      lowerInput.includes('dream') ||
+      lowerInput.includes('ভবিষ্যৎ') ||
+      lowerInput.includes('লক্ষ্য') ||
+      lowerInput.includes('পরিকল্পনা')
     ) {
-      return `👨‍👩‍👧‍👦 **Family & Personal Background:**
+      return `🎯 **ভবিষ্যৎ লক্ষ্য ও ক্যারিয়ার পরিকল্পনা:**
 
-**Family Members:**
-👨 **Father:** Md Rokibul Hasan Shekh
-👩 **Mother:** Mst. Zosna Khatun  
-👧 **Sister:** 1 Younger Sister
+**🎓 তাৎক্ষণিক লক্ষ্য (২০২৪-২০২৫):**
+• কম্পিউটার সায়েন্স ইঞ্জিনিয়ারিং-এ বিশ্ববিদ্যালয়ে ভর্তি
+• উন্নত React.js ও Full-stack উন্নয়ন
+• ১০+ পেশাদার প্রজেক্ট সম্পন্ন করা
+• কমিউনিটি সমাধান কেন্দ্রিক টেক স্টার্টআপ চালু করা
 
-**Personal Values:**
-☪️ **Religion:** Islam (practicing with humanitarian values)
-🤲 **Philosophy:** "Serve humanity, serve Allah"
-💝 **Core Values:** Integrity, Empathy, Excellence, Service
+**💼 ক্যারিয়ার পথ (২০২৫-২০৩০):**
+• **সফটওয়্যার ইঞ্জিনিয়ার** - শীর্ষ টেক কোম্পানিতে
+• **কমিউনিটি টেক লিডার** - স্থানীয় ডিজিটাল উদ্যোগ
+• **ইসলামিক টেক গবেষক** - প্রযুক্তি নৈতিকতা
+• **সামাজিক উদ্যোক্তা** - সামাজিক কল্যাণে প্রযুক্তি
 
-**Personality Traits:**
-• 🎯 Goal-oriented and determined
-• 🤝 Collaborative team player
-• 💡 Creative problem solver
-• 📚 Lifelong learner
-• 🌟 Optimistic and positive attitude
+**🌍 দীর্ঘমেয়াদী স্বপ্ন (২০৩০+):**
+• **টেক কোম্পানি প্রতিষ্ঠাতা** - মানবিক ফোকাস নিয়ে
+• **আন্তর্জাতিক বক্তা** - ইসলামিক টেক নৈতিকতা
+• **কমিউনিটি উন্নয়ন নেতা** - জাতীয় পর্যায়ে
+• **শিক্ষা সংস্কারক** - ডিজিটাল শিক্ষা বিপ্লব
 
-**Hobbies & Interests:**
-• 💻 Technology & Innovation
-• 📖 Reading Islamic literature & tech blogs
-• ✍️ Writing poetry (Bengali)
-• 🎮 Chess & strategic games
-• 🌱 Community development projects
+**🚀 স্বপ্নের প্রজেক্ট:**
+• গ্লোবাল ইসলামিক শিক্ষা প্ল্যাটফর্ম
+• AI-চালিত কুরআন অনুবাদ ও তাফসির
+• বিশ্বব্যাপী কমিউনিটি সেবা নেটওয়ার্ক
+• উন্নয়নশীল দেশের জন্য টেক সমাধান
 
-**Life Motto:** "Use technology to make the world a better place for everyone."`;
-    }
-
-    // Age & Birth Information
-    if (
-      lowerInput.includes('age') ||
-      lowerInput.includes('old') ||
-      lowerInput.includes('birth') ||
-      lowerInput.includes('birthday')
-    ) {
-      const birthDate = new Date('2007-12-31');
-      const today = new Date();
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const monthDiff = today.getMonth() - birthDate.getMonth();
-
-      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-      }
-
-      return `🎂 **Age & Birth Details:**
-
-**Current Age:** ${age} years old
-**Date of Birth:** December 31, 2007
-**Zodiac Sign:** Capricorn ♑
-**Birth Place:** Bogura, Bangladesh
-
-**Fun Facts:**
-🎉 Born on New Year's Eve - Always celebrating!
-⭐ Capricorn traits: Ambitious, disciplined, practical
-🌟 Started coding journey at age 15
-🎯 Achieved academic excellence consistently
-
-**Milestones by Age:**
-• Age 15: First website created
-• Age 16: Perfect HSC results (GPA 5.00)
-• Age 16: BOBDO platform launched
-• Age 17: Multiple tech certifications earned
-
-**Next Year Goals:**
-🎓 University admission in Computer Science
-💻 Advanced web development projects
-🌍 International tech competitions`;
+**💡 মিশন স্টেটমেন্ট:**
+"আল্লাহর সৃষ্টির সেবার মাধ্যম হিসেবে প্রযুক্তি ব্যবহার করা, কমিউনিটির মধ্যে সেতুবন্ধন তৈরি করা, এবং উদ্ভাবন ও সেবার মাধ্যমে আরও ন্যায়সঙ্গত ও সমতাপূর্ণ বিশ্ব তৈরি করা।"`;
     }
 
     // Poetry & Creative Work
@@ -359,173 +278,76 @@ Feel free to reach out for collaborations, projects, or just a friendly chat! �
       lowerInput.includes('poem') ||
       lowerInput.includes('writing') ||
       lowerInput.includes('creative') ||
-      lowerInput.includes('blog') ||
-      lowerInput.includes('bengali')
+      lowerInput.includes('কবিতা') ||
+      lowerInput.includes('লেখালেখি')
     ) {
-      return `✍️ **Poetry & Creative Expression:**
+      return `✍️ **কবিতা ও সৃজনশীল প্রকাশ:**
 
-**🎭 Poetry Collection - "কবিতার ভুবন"**
-*"Rhythmic expressions from the depths of the heart"*
+**🎭 কবিতা সংগ্রহ - "কবিতার ভুবন"**
+*"হৃদয়ের গভীর থেকে উঠে আসা ছন্দময় অভিব্যক্তি"*
 
-**Featured Poems:**
-📝 **"ভালোবাসার গান"** - A love ballad
-📝 **"স্বপ্নের পথে"** - Dreams and aspirations  
-📝 **"মানবতার ডাক"** - Call for humanity
-📝 **"প্রযুক্তির ভবিষ্যৎ"** - Future of technology
+**বিশেষ কবিতাসমূহ:**
+📝 **"ভালোবাসার গান"** - একটি প্রেমের গীতিকবিতা
+📝 **"স্বপ্নের পথে"** - স্বপ্ন ও আকাঙ্ক্ষার কবিতা
+📝 **"মানবতার ডাক"** - মানবতার আহ্বান
+📝 **"প্রযুক্তির ভবিষ্যৎ"** - প্রযুক্তির ভবিষ্যৎ নিয়ে
 
-**Writing Style:**
-• Deep emotional expression in Bengali
-• Modern themes with traditional rhythm
-• Focus on humanity, love, and social issues
-• Technology's role in human development
+**লেখার ধরন:**
+• বাংলায় গভীর আবেগপূর্ণ প্রকাশ
+• ঐতিহ্যবাহী ছন্দের সাথে আধুনিক বিষয়বস্তু
+• মানবতা, ভালোবাসা ও সামাজিক সমস্যার উপর ফোকাস
+• মানব উন্নয়নে প্রযুক্তির ভূমিকা
 
-**Inspiration Sources:**
-• Life experiences & community service
-• Islamic values & humanitarian principles  
-• Technology's impact on society
-• Personal relationships & emotions
+**অনুপ্রেরণার উৎস:**
+• জীবনের অভিজ্ঞতা ও কমিউনিটি সেবা
+• ইসলামিক মূল্যবোধ ও মানবিক নীতি
+• সমাজে প্রযুক্তির প্রভাব
+• ব্যক্তিগত সম্পর্ক ও আবেগ
 
-**Platform:** Personal blog section showcases all creative works
-**Language:** Primarily Bengali, some English pieces
-**Theme:** Love, humanity, technology, and spiritual growth
+**প্ল্যাটফর্ম:** ব্যক্তিগত ব্লগ বিভাগে সকল সৃজনশীল কাজ প্রদর্শিত
+**ভাষা:** প্রধানত বাংলা, কিছু ইংরেজি রচনা
+**থিম:** ভালোবাসা, মানবতা, প্রযুক্তি, এবং আধ্যাত্মিক উন্নতি
 
 *"কবিতা হৃদয়ের ভাষা, আর ভাষায় প্রকাশ পায় মনের কথা"*`;
     }
 
-    // Research & Academic Work
+    // Family & Personal Information
     if (
-      lowerInput.includes('research') ||
-      lowerInput.includes('academic') ||
-      lowerInput.includes('study') ||
-      lowerInput.includes('thesis') ||
-      lowerInput.includes('paper') ||
-      lowerInput.includes('islamic')
+      lowerInput.includes('family') ||
+      lowerInput.includes('personal') ||
+      lowerInput.includes('father') ||
+      lowerInput.includes('mother') ||
+      lowerInput.includes('পরিবার') ||
+      lowerInput.includes('বাবা') ||
+      lowerInput.includes('মা')
     ) {
-      return `📚 **Research & Academic Contributions:**
+      return `👨‍👩‍👧‍👦 **পারিবারিক ও ব্যক্তিগত পটভূমি:**
 
-**🕌 Islamic Perspective on Technology**
-*"Technology as a tool for serving humanity and Allah's creation"*
+**পরিবারের সদস্যগণ:**
+👨 **বাবা:** মোহাম্মদ রকিবুল হাসান শেখ
+👩 **মা:** মোছাম্মৎ জসনা খাতুন
+👧 **বোন:** ১ জন ছোট বোন
 
-**Research Areas:**
-• **Digital Ethics in Islam:** Halal use of technology
-• **Community Development:** Tech solutions for social problems  
-• **Education Technology:** Islamic learning platforms
-• **Humanitarian Tech:** Technology for social welfare
+**ব্যক্তিগত মূল্যবোধ:**
+☪️ **ধর্ম:** ইসলাম (মানবিক মূল্যবোধ সহকারে অনুশীলন)
+🤲 **দর্শন:** "মানবতার সেবা, আল্লাহর সেবা"
+💝 **মূল মূল্যবোধ:** সততা, সহমর্মিতা, শ্রেষ্ঠত্ব, সেবা
 
-**Published Works:**
-📄 "Technology & Islamic Values - A Modern Perspective"
-📄 "Digital Dawah - Spreading Islam through Technology"  
-📄 "Community Service in the Digital Age"
-📄 "Ethical Programming - Islamic Guidelines for Developers"
+**ব্যক্তিত্বের বৈশিষ্ট্য:**
+• 🎯 লক্ষ্যভিত্তিক ও দৃঢ়প্রতিজ্ঞ
+• 🤝 সহযোগিতামূলক টিম প্লেয়ার
+• 💡 সৃজনশীল সমস্যা সমাধানকারী
+• 📚 আজীবন শিক্ষার্থী
+• 🌟 আশাবাদী ও ইতিবাচক মনোভাব
 
-**Research Methodology:**
-• Quran & Hadith references
-• Modern technology analysis
-• Community impact studies
-• Practical implementation strategies
+**শখ ও আগ্রহ:**
+• 💻 প্রযুক্তি ও উদ্ভাবন
+• 📖 ইসলামিক সাহিত্য ও টেক ব্লগ পড়া
+• ✍️ কবিতা লেখা (বাংলায়)
+• 🎮 দাবা ও কৌশলগত খেলা
+• 🌱 কমিউনিটি উন্নয়ন প্রকল্প
 
-**Academic Focus:**
-• Bridging traditional Islamic knowledge with modern tech
-• Creating tech solutions that align with Islamic principles
-• Promoting digital literacy in Muslim communities
-
-**Future Research Goals:**
-🎯 AI Ethics from Islamic perspective
-🎯 Blockchain technology for Zakat distribution  
-🎯 Educational apps for Quran & Hadith learning`;
-    }
-
-    // Career Goals & Future Plans
-    if (
-      lowerInput.includes('future') ||
-      lowerInput.includes('goal') ||
-      lowerInput.includes('plan') ||
-      lowerInput.includes('career') ||
-      lowerInput.includes('dream') ||
-      lowerInput.includes('ambition')
-    ) {
-      return `🎯 **Future Goals & Career Aspirations:**
-
-**🎓 Immediate Goals (2024-2025):**
-• University admission in Computer Science Engineering
-• Advanced React.js & Full-stack development
-• Complete 10+ professional projects
-• Launch tech startup focused on community solutions
-
-**💼 Career Path (2025-2030):**
-• **Software Engineer** at top tech company
-• **Community Tech Leader** - Local digital initiatives  
-• **Islamic Tech Researcher** - Technology ethics
-• **Social Entrepreneur** - Tech for social good
-
-**🌍 Long-term Vision (2030+):**
-• **Tech Company Founder** - Humanitarian focus
-• **International Speaker** - Islamic tech ethics
-• **Community Development Leader** - National level
-• **Educational Reformer** - Digital learning revolution
-
-**🚀 Dream Projects:**
-• Global Islamic learning platform
-• AI-powered Quran translation & tafsir
-• Worldwide community service network
-• Tech solutions for developing countries
-
-**💡 Mission Statement:**
-*"To use technology as a means of serving Allah's creation, building bridges between communities, and creating a more just and equitable world through innovation and service."*
-
-**Core Values in Career:**
-✅ Integrity & Islamic principles
-✅ Service to humanity  
-✅ Innovation for social good
-✅ Continuous learning & growth`;
-    }
-
-    // Technical Support & Help
-    if (
-      lowerInput.includes('help') ||
-      lowerInput.includes('support') ||
-      lowerInput.includes('problem') ||
-      lowerInput.includes('issue') ||
-      lowerInput.includes('fix') ||
-      lowerInput.includes('error')
-    ) {
-      return `🛠️ **Technical Support & Help:**
-
-**💻 Web Development Support:**
-• React.js & JavaScript debugging
-• Firebase integration & setup
-• Responsive design solutions
-• Performance optimization
-
-**📱 General Tech Help:**
-• Computer troubleshooting
-• Software installation & setup
-• Microsoft Office training
-• Digital marketing guidance
-
-**🎓 Educational Support:**
-• Programming tutorials & mentoring
-• CV writing & career guidance
-• Academic project assistance
-• Technology career counseling
-
-**🤝 Community Services:**
-• Free website development for local businesses
-• Digital literacy training for seniors
-• Blood donation coordination through BOBDO
-• Technical consultation for startups
-
-**📞 How to Get Help:**
-1. **Email:** ridoan.zisan@gmail.com (detailed issues)
-2. **Phone:** +8801712525910 (urgent matters)
-3. **LinkedIn:** Professional networking & guidance
-
-**⏰ Support Hours:**
-• Monday-Friday: 2 PM - 10 PM
-• Saturday-Sunday: 10 AM - 8 PM
-• Emergency: Available 24/7 for blood donation
-
-**💝 Philosophy:** "Helping others is not just my hobby, it's my responsibility as a human being."`;
+**জীবনের মূলমন্ত্র:** "প্রযুক্তি ব্যবহার করে সবার জন্য পৃথিবীকে আরো সুন্দর করে তোলা।"`;
     }
 
     // Basic Greetings & Welcome
@@ -534,34 +356,36 @@ Feel free to reach out for collaborations, projects, or just a friendly chat! �
       lowerInput.includes('hi') ||
       lowerInput.includes('hey') ||
       lowerInput.includes('assalam') ||
-      lowerInput.includes('peace')
+      lowerInput.includes('সালাম') ||
+      lowerInput.includes('হাই') ||
+      lowerInput.includes('হ্যালো')
     ) {
-      return `👋 **আসসালামু আলাইকুম! Welcome!**
+      return `👻 **আসসালামু আলাইকুম! স্বাগতম!**
 
-I'm **Ghost AI**, Ridoan's digital assistant! 🤖✨
+আমি **Ghost AI**, রিদোয়ানের ডিজিটাল সহায়ক! 🤖✨
 
-**About Ridoan:**
-🎓 16-year-old prodigy from Bogura, Bangladesh
-💻 Web Developer & Community Volunteer  
-🩸 BOBDO Platform Creator (68K+ users served)
-⭐ Perfect academic record (HSC GPA 5.00)
+**রিদোয়ান সম্পর্কে:**
+🎓 বগুড়ার ১৬ বছর বয়সী প্রতিভাবান
+💻 ওয়েব ডেভেলপার ও কমিউনিটি স্বেচ্ছাসেবক
+🩸 BOBDO প্ল্যাটফর্ম স্রষ্টা (৬৮হাজার+ ব্যবহারকারী)
+⭐ নিখুঁত একাডেমিক রেকর্ড (HSC GPA 5.00)
 
-**What You Can Ask Me:**
-🔍 **Personal Info:** Background, education, family
-💼 **Professional:** Skills, projects, achievements  
-🏆 **Certifications:** 25+ tech & academic certificates
-🤝 **Volunteer Work:** Community service & social impact
-✍️ **Creative Work:** Poetry, blogs, research
-📞 **Contact:** How to reach Ridoan
-🎯 **Future Plans:** Goals & career aspirations
+**আমাকে যা জিজ্ঞাসা করতে পারেন:**
+🔍 **ব্যক্তিগত তথ্য:** পটভূমি, শিক্ষা, পরিবার
+💼 **পেশাদারিত্ব:** দক্ষতা, প্রজেক্ট, অর্জন
+🏆 **সার্টিফিকেট:** ২৫+ টেক ও একাডেমিক সার্টিফিকেট
+🤝 **স্বেচ্ছাসেবক কাজ:** কমিউনিটি সেবা ও সামাজিক প্রভাব
+✍️ **সৃজনশীল কাজ:** কবিতা, ব্লগ, গবেষণা
+📞 **যোগাযোগ:** কীভাবে রিদোয়ানের সাথে যোগাযোগ করবেন
+🎯 **ভবিষ্যৎ পরিকল্পনা:** লক্ষ্য ও ক্যারিয়ার আকাঙ্ক্ষা
 
-**Popular Questions:**
-• "Tell me about Ridoan's projects"
-• "What are his technical skills?"  
-• "How can I contact him?"
-• "What volunteer work does he do?"
+**জনপ্রিয় প্রশ্ন:**
+• "রিদোয়ানের প্রজেক্ট সম্পর্কে বলুন"
+• "তার প্রযুক্তিগত দক্ষতা কী?"
+• "কীভাবে তার সাথে যোগাযোগ করব?"
+• "তিনি কী ধরনের স্বেচ্ছাসেবক কাজ করেন?"
 
-**🌟 Ready to help! What would you like to know?**`;
+**🌟 সাহায্যের জন্য প্রস্তুত! কী জানতে চান?**`;
     }
 
     // Thank You Response
@@ -569,57 +393,58 @@ I'm **Ghost AI**, Ridoan's digital assistant! 🤖✨
       lowerInput.includes('thank') ||
       lowerInput.includes('thanks') ||
       lowerInput.includes('jazak') ||
-      lowerInput.includes('grateful')
+      lowerInput.includes('ধন্যবাদ') ||
+      lowerInput.includes('শুকরিয়া')
     ) {
-      return `🙏 **You're Most Welcome!**
+      return `🙏 **আপনাকে স্বাগতম!**
 
-**جزاك الله خيراً** (May Allah reward you with goodness)
+**জাজাকাল্লাহু খইরান** (আল্লাহ আপনাকে উত্তম প্রতিদান দিন)
 
-It's my pleasure to share information about **Md Ridoan Mahmud Zisan**! 
+**মোহাম্মদ রিদোয়ান মাহমুদ জিসান** সম্পর্কে তথ্য শেয়ার করতে পেরে আনন্দিত!
 
-**Need More Information?**
-• 📧 Direct Email: ridoan.zisan@gmail.com
-• 📞 Phone/WhatsApp: +8801712525910  
-• 🔗 LinkedIn: https://linkedin.com/in/ridoan2007
-• 🌐 Portfolio: Complete projects showcase
+**আরো তথ্যের জন্য:**
+• 📧 সরাসরি ইমেইল: ridoan.zisan@gmail.com
+• 📞 ফোন/হোয়াটসঅ্যাপ: +৮৮০১৭১২৫২৫৯১০
+• 🔗 লিংকডইন: https://linkedin.com/in/ridoan2007
+• 🌐 পোর্টফলিও: সম্পূর্ণ প্রজেক্ট প্রদর্শনী
 
-**Remember:**
-*"The best of people are those who benefit others"* - This is Ridoan's guiding principle!
+**মনে রাখবেন:**
+*"সেরা মানুষ তারাই যারা অন্যদের উপকার করে"* - এটাই রিদোয়ানের পথপ্রদর্শক নীতি!
 
-**Feel free to ask anything else about:**
-✅ His projects & technical work
-✅ Community service & volunteer activities  
-✅ Educational background & achievements
-✅ Future goals & collaboration opportunities
+**আরো যা জানতে পারেন:**
+✅ তার প্রজেক্ট ও প্রযুক্তিগত কাজ  
+✅ কমিউনিটি সেবা ও স্বেচ্ছাসেবক কার্যক্রম
+✅ শিক্ষাগত পটভূমি ও অর্জন
+✅ ভবিষ্যৎ লক্ষ্য ও সহযোগিতার সুযোগ
 
-**Stay Connected & May Allah Bless You!** 🤲✨`;
+**যোগাযোগ রাখুন ও আল্লাহ আপনাকে বরকত দিন!** 🤲✨`;
     }
 
-    return null;
+    // Default response for unmatched queries
+    return `ধন্যবাদ প্রশ্নের জন্য! আমি Ghost AI, রিদোয়ানের সব তথ্য জানি। 
+
+আমাকে জিজ্ঞাসা করুন:
+• তার শিক্ষা ও অর্জন
+• প্রযুক্তিগত দক্ষতা ও প্রজেক্ট
+• স্বেচ্ছাসেবক কাজ ও কমিউনিটি সেবা
+• যোগাযোগের তথ্য
+• ভবিষ্যৎ লক্ষ্য ও আকাঙ্ক্ষা
+• কবিতা ও সৃজনশীল কাজ
+• গবেষণা ও একাডেমিক অবদান
+
+চেষ্টা করুন: "রিদোয়ানের প্রজেক্ট সম্পর্কে বলুন" বা "কীভাবে তার সাথে যোগাযোগ করব?"`;
   };
 
   useEffect(() => {
-    if (isChatOpen && !isMinimized) {
+    if (isChatOpen) {
       inputRef.current?.focus();
       setUnreadCount(0);
     }
-  }, [isChatOpen, isMinimized]);
+  }, [isChatOpen]);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages, isLoading]);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        // Optional: Auto-minimize instead of close when clicking outside
-        // setIsMinimized(true);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -642,19 +467,7 @@ It's my pleasure to share information about **Md Ridoan Mahmud Zisan**!
 
     // Simulate typing delay for better UX
     setTimeout(() => {
-      const response = getConstantReply(userMessage.content) || 
-        `Thank you for your question! I'm Ghost AI, here to provide information about Md Ridoan Mahmud Zisan. 
-
-Please ask me about:
-• His education & achievements
-• Technical skills & projects  
-• Volunteer work & community service
-• Contact information
-• Future goals & aspirations
-• Poetry & creative work
-• Research & academic contributions
-
-Try asking: "Tell me about Ridoan's projects" or "How can I contact him?"`;
+      const response = getConstantReply(userMessage.content);
 
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -666,256 +479,253 @@ Try asking: "Tell me about Ridoan's projects" or "How can I contact him?"`;
       setMessages((prev) => [...prev, aiMessage]);
       setIsLoading(false);
 
-      // Add unread count if chat is minimized
-      if (isMinimized) {
+      // Add unread count if chat is closed
+      if (!isChatOpen) {
         setUnreadCount(prev => prev + 1);
       }
-    }, 1000 + Math.random() * 1000); // 1-2 second delay
+    }, 1000 + Math.random() * 1000);
   };
 
   const toggleChat = () => {
-    if (isChatOpen) {
-      setIsChatOpen(false);
-      setIsMinimized(false);
-    } else {
-      setIsChatOpen(true);
-      setIsMinimized(false);
-    }
+    setIsChatOpen(!isChatOpen);
     setUnreadCount(0);
   };
 
-  const toggleMinimize = () => {
-    setIsMinimized(!isMinimized);
-    if (!isMinimized) {
-      setUnreadCount(0);
-    }
-  };
-
-  // Enhanced Ghost Icon with animation
+  // Enhanced Ghost Icon with magical effects
   const GhostIcon = ({ size = 24, className = '', animated = true }) => (
     <div className={`relative ${animated ? 'animate-float' : ''} ${className}`}>
-      <svg width={size} height={size} viewBox="0 0 24 24" className="drop-shadow-lg">
+      <svg width={size} height={size} viewBox="0 0 24 24" className="drop-shadow-xl">
         <defs>
           <linearGradient id="ghostGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#8B5CF6" />
-            <stop offset="100%" stopColor="#A855F7" />
+            <stop offset="0%" stopColor="#8B5CF6" stopOpacity="1" />
+            <stop offset="50%" stopColor="#A855F7" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="#C084FC" stopOpacity="0.8" />
           </linearGradient>
+          <filter id="ghostGlow">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge> 
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
         </defs>
-        {/* Ghost body */}
+        
+        {/* Ghost body with glow */}
         <path 
-          d="M12 2C8.5 2 6 4.5 6 8v8c0 1 0.5 2 1.5 2.5l1-1.5 1.5 1.5 1.5-1.5 1.5 1.5 1-1.5c1-0.5 1.5-1.5 1.5-2.5V8c0-3.5-2.5-6-6-6z" 
+          d="M12 2C8.2 2 5.8 4.8 5.8 8.2v8.4c0 1.2 0.6 2.3 1.6 2.9l1.2-1.8 1.8 1.8 1.8-1.8 1.8 1.8 1.2-1.8c1-0.6 1.6-1.7 1.6-2.9V8.2C18.2 4.8 15.8 2 12 2z" 
           fill="url(#ghostGradient)"
+          filter="url(#ghostGlow)"
           className="animate-pulse"
         />
-        {/* Eyes */}
-        <circle cx="9.5" cy="9" r="1.5" fill="white" />
-        <circle cx="14.5" cy="9" r="1.5" fill="white" />
-        <circle cx="9.5" cy="9" r="0.8" fill="#1F2937" />
-        <circle cx="14.5" cy="9" r="0.8" fill="#1F2937" />
+        
+        {/* Eyes with shine */}
+        <circle cx="9" cy="9" r="1.8" fill="white" />
+        <circle cx="15" cy="9" r="1.8" fill="white" />
+        <circle cx="9" cy="9" r="1.2" fill="#1F2937" />
+        <circle cx="15" cy="9" r="1.2" fill="#1F2937" />
+        <circle cx="9.5" cy="8.5" r="0.3" fill="white" />
+        <circle cx="15.5" cy="8.5" r="0.3" fill="white" />
+        
         {/* Mouth */}
-        <ellipse cx="12" cy="13" rx="1.5" ry="1" fill="white" />
+        <ellipse cx="12" cy="13.5" rx="2" ry="1.5" fill="white" />
+        <ellipse cx="12" cy="13.5" rx="1.5" ry="1" fill="#1F2937" />
       </svg>
-      {/* Floating sparkles */}
-      <div className="absolute -top-1 -right-1 text-yellow-400 animate-pulse">
-        <Sparkles size={12} />
+      
+      {/* Magical sparkles */}
+      <div className="absolute -top-2 -right-2 text-yellow-400 animate-pulse">
+        <Sparkles size={14} />
+      </div>
+      <div className="absolute -bottom-1 -left-1 text-purple-400 animate-bounce" style={{animationDelay: '0.5s'}}>
+        <Sparkles size={10} />
       </div>
     </div>
   );
 
   return (
     <div className="fixed bottom-4 right-4 flex flex-col items-end gap-3 z-[9999]" ref={containerRef}>
-      {/* Floating Action Button */}
+      {/* Enhanced Floating Action Button */}
       <div className="relative">
         <button
           onClick={toggleChat}
-          className="group relative bg-gradient-to-br from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white p-4 rounded-full shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-110 border-2 border-purple-500/20"
-          title="Chat with Ghost AI"
+          className="group relative bg-gradient-to-br from-purple-600 via-purple-700 to-indigo-800 hover:from-purple-700 hover:via-purple-800 hover:to-indigo-900 text-white p-5 rounded-full shadow-2xl hover:shadow-purple-500/40 transition-all duration-500 transform hover:scale-110 active:scale-95 border-2 border-purple-400/30 backdrop-blur-sm"
+          title="Ghost AI এর সাথে চ্যাট করুন"
           style={{
-            boxShadow: '0 8px 32px rgba(139, 92, 246, 0.4), 0 0 20px rgba(168, 85, 247, 0.3)',
+            boxShadow: '0 10px 40px rgba(139, 92, 246, 0.5), 0 0 30px rgba(168, 85, 247, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
           }}
         >
-          <GhostIcon size={28} />
+          <GhostIcon size={32} />
           
           {/* Notification Badge */}
           {unreadCount > 0 && (
-            <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold animate-bounce">
+            <div className="absolute -top-3 -right-3 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full w-7 h-7 flex items-center justify-center font-bold animate-bounce shadow-lg">
               {unreadCount > 9 ? '9+' : unreadCount}
             </div>
           )}
 
-          {/* Ripple Effect */}
+          {/* Animated rings */}
           <div className="absolute inset-0 rounded-full bg-purple-400 opacity-20 animate-ping"></div>
+          <div className="absolute inset-0 rounded-full bg-purple-300 opacity-10 animate-ping" style={{animationDelay: '1s'}}></div>
         </button>
 
-        {/* Tooltip */}
-        <div className="absolute bottom-full right-0 mb-2 bg-gray-900 text-white text-sm px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
-          Ask me about Ridoan! 👻
+        {/* Enhanced Tooltip */}
+        <div className="absolute bottom-full right-0 mb-3 bg-gray-900 text-white text-sm px-4 py-3 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap shadow-xl backdrop-blur-sm border border-gray-700">
+          <div className="flex items-center gap-2">
+            <GhostIcon size={16} animated={false} />
+            <span>রিদোয়ান সম্পর্কে জিজ্ঞাসা করুন! 👻</span>
+          </div>
           <div className="absolute top-full right-4 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
         </div>
       </div>
 
-      {/* Chat Window */}
+      {/* Enhanced Chat Window */}
       {isChatOpen && (
-        <div className={`bg-white rounded-2xl shadow-2xl border border-purple-200 flex flex-col transition-all duration-300 ${
-          isMinimized 
-            ? 'w-80 h-16' 
-            : 'w-96 max-w-[calc(100vw-2rem)] h-[28rem] max-h-[calc(100vh-8rem)]'
-        }`}>
+        <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-purple-200/50 flex flex-col w-96 max-w-[calc(100vw-2rem)] h-[32rem] max-h-[calc(100vh-8rem)] transition-all duration-500 animate-scale-in">
           
           {/* Chat Header */}
-          <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white p-4 rounded-t-2xl flex justify-between items-center border-b border-purple-500/20">
-            <div className="flex items-center gap-3">
+          <div className="bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-800 text-white p-5 rounded-t-3xl flex justify-between items-center border-b border-purple-500/30 backdrop-blur-sm">
+            <div className="flex items-center gap-4">
               <div className="relative">
-                <GhostIcon size={32} className="text-white" animated={false} />
-                <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></div>
+                <GhostIcon size={36} className="text-white" animated={false} />
+                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white animate-pulse"></div>
               </div>
               <div>
-                <h3 className="font-bold text-lg flex items-center gap-2">
+                <h3 className="font-bold text-xl flex items-center gap-2">
                   Ghost AI
-                  <Bot size={18} className="text-purple-200" />
+                  <Bot size={20} className="text-purple-200" />
                 </h3>
-                <p className="text-purple-200 text-sm">Ridoan's Digital Assistant</p>
+                <p className="text-purple-200 text-sm">রিদোয়ানের ডিজিটাল সহায়ক</p>
               </div>
             </div>
             
-            <div className="flex items-center gap-2">
-              <button
-                onClick={toggleMinimize}
-                className="text-purple-200 hover:text-white transition-colors p-1 rounded-full hover:bg-purple-600"
-                title={isMinimized ? "Maximize" : "Minimize"}
-              >
-                {isMinimized ? <Maximize2 size={18} /> : <Minimize2 size={18} />}
-              </button>
-              <button
-                onClick={() => setIsChatOpen(false)}
-                className="text-purple-200 hover:text-white transition-colors p-1 rounded-full hover:bg-purple-600"
-                title="Close Chat"
-              >
-                <X size={18} />
-              </button>
-            </div>
+            <button
+              onClick={() => setIsChatOpen(false)}
+              className="text-purple-200 hover:text-white transition-colors p-2 rounded-full hover:bg-purple-600/50 backdrop-blur-sm"
+              title="চ্যাট বন্ধ করুন"
+            >
+              <X size={20} />
+            </button>
           </div>
 
-          {/* Chat Content */}
-          {!isMinimized && (
-            <>
-              {/* Messages Container */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-purple-50/30 to-white">
-                {messages.length === 0 && (
-                  <div className="text-center py-8">
-                    <div className="mb-4">
-                      <GhostIcon size={64} className="mx-auto text-purple-600" />
-                    </div>
-                    <h4 className="text-xl font-bold text-gray-800 mb-2">
-                      আসসালামু আলাইকুম! 👋
-                    </h4>
-                    <p className="text-gray-600 mb-4">
-                      I'm Ghost AI, here to tell you everything about 
-                      <br /><strong>Md Ridoan Mahmud Zisan!</strong>
-                    </p>
-                    <div className="flex flex-wrap gap-2 justify-center text-xs">
-                      <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded-full">Education</span>
-                      <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Projects</span>
-                      <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full">Skills</span>
-                      <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full">Contact</span>
-                    </div>
-                  </div>
-                )}
-
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex items-start gap-3 ${
-                      message.role === 'user' ? 'flex-row-reverse' : ''
-                    }`}
-                  >
-                    <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                        message.role === 'user'
-                          ? 'bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg'
-                          : 'bg-gradient-to-br from-purple-500 to-purple-600 shadow-lg border-2 border-purple-300'
-                      }`}
-                    >
-                      {message.role === 'user' ? (
-                        <User className="w-5 h-5 text-white" />
-                      ) : (
-                        <GhostIcon size={20} className="text-white" animated={false} />
-                      )}
-                    </div>
-                    
-                    <div
-                      className={`rounded-2xl px-4 py-3 max-w-[75%] shadow-sm ${
-                        message.role === 'user'
-                          ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-tr-sm'
-                          : 'bg-white border border-purple-100 text-gray-800 rounded-tl-sm'
-                      }`}
-                    >
-                      <div className="text-sm leading-relaxed whitespace-pre-wrap font-medium">
-                        {message.content}
-                      </div>
-                      <div className={`text-xs mt-2 ${
-                        message.role === 'user' ? 'text-blue-100' : 'text-gray-500'
-                      }`}>
-                        {format(message.timestamp, 'h:mm a')}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-                {isLoading && (
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center shadow-lg">
-                      <GhostIcon size={20} className="text-white" animated={false} />
-                    </div>
-                    <div className="bg-white border border-purple-100 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
-                      <div className="flex gap-1">
-                        <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                        <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                <div ref={messagesEndRef} />
-              </div>
-
-              {/* Input Form */}
-              <div className="border-t border-purple-100 p-4 bg-white rounded-b-2xl">
-                <form onSubmit={handleSubmit} className="flex gap-3">
-                  <input
-                    ref={inputRef}
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Ask me about Ridoan... 👻"
-                    disabled={isLoading}
-                    className="flex-1 rounded-xl border border-purple-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed placeholder-gray-400 text-sm"
-                  />
-                  <button
-                    type="submit"
-                    disabled={!input.trim() || isLoading}
-                    className="bg-gradient-to-br from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white rounded-xl px-4 py-3 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg hover:shadow-purple-500/25 group"
-                  >
-                    <Send className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                  </button>
-                </form>
-                
-                {/* Quick Suggestions */}
-                <div className="flex gap-2 mt-3 flex-wrap">
-                  {['Projects', 'Skills', 'Contact', 'Education'].map((suggestion) => (
-                    <button
-                      key={suggestion}
-                      onClick={() => setInput(`Tell me about Ridoan's ${suggestion.toLowerCase()}`)}
-                      className="text-xs bg-purple-50 hover:bg-purple-100 text-purple-700 px-3 py-1 rounded-full transition-colors border border-purple-200"
-                    >
-                      {suggestion}
-                    </button>
-                  ))}
+          {/* Messages Container */}
+          <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-gradient-to-b from-purple-50/50 to-white/80 backdrop-blur-sm">
+            {messages.length === 0 && (
+              <div className="text-center py-8">
+                <div className="mb-6">
+                  <GhostIcon size={80} className="mx-auto text-purple-600" />
+                </div>
+                <h4 className="text-2xl font-bold text-gray-800 mb-3">
+                  আসসালামু আলাইকুম! 👋
+                </h4>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  আমি Ghost AI, এখানে আছি আপনাকে সব কিছু বলার জন্য
+                  <br /><strong className="text-purple-700">মোহাম্মদ রিদোয়ান মাহমুদ জিসান</strong> সম্পর্কে!
+                </p>
+                <div className="flex flex-wrap gap-2 justify-center text-xs">
+                  <span className="bg-purple-100 text-purple-700 px-3 py-2 rounded-full border border-purple-200">শিক্ষা</span>
+                  <span className="bg-blue-100 text-blue-700 px-3 py-2 rounded-full border border-blue-200">প্রজেক্ট</span>
+                  <span className="bg-green-100 text-green-700 px-3 py-2 rounded-full border border-green-200">দক্ষতা</span>
+                  <span className="bg-red-100 text-red-700 px-3 py-2 rounded-full border border-red-200">যোগাযোগ</span>
                 </div>
               </div>
-            </>
-          )}
+            )}
+
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex items-start gap-3 ${
+                  message.role === 'user' ? 'flex-row-reverse' : ''
+                }`}
+              >
+                <div
+                  className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg ${
+                    message.role === 'user'
+                      ? 'bg-gradient-to-br from-blue-500 to-blue-600'
+                      : 'bg-gradient-to-br from-purple-500 to-purple-600 border-2 border-purple-300'
+                  }`}
+                >
+                  {message.role === 'user' ? (
+                    <User className="w-6 h-6 text-white" />
+                  ) : (
+                    <GhostIcon size={24} className="text-white" animated={false} />
+                  )}
+                </div>
+                
+                <div
+                  className={`rounded-2xl px-5 py-4 max-w-[80%] shadow-lg backdrop-blur-sm ${
+                    message.role === 'user'
+                      ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-tr-sm border border-blue-400'
+                      : 'bg-white/90 border border-purple-200 text-gray-800 rounded-tl-sm'
+                  }`}
+                >
+                  <div className="text-sm leading-relaxed whitespace-pre-wrap font-medium">
+                    {message.content}
+                  </div>
+                  <div className={`text-xs mt-3 ${
+                    message.role === 'user' ? 'text-blue-100' : 'text-gray-500'
+                  }`}>
+                    {format(message.timestamp, 'h:mm a')}
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {isLoading && (
+              <div className="flex items-start gap-3">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center shadow-lg">
+                  <GhostIcon size={24} className="text-white" animated={false} />
+                </div>
+                <div className="bg-white/90 border border-purple-200 rounded-2xl rounded-tl-sm px-5 py-4 shadow-lg backdrop-blur-sm">
+                  <div className="flex gap-2">
+                    <div className="w-3 h-3 bg-purple-400 rounded-full animate-bounce"></div>
+                    <div className="w-3 h-3 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-3 h-3 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Enhanced Input Form */}
+          <div className="border-t border-purple-200 p-5 bg-white/90 rounded-b-3xl backdrop-blur-sm">
+            <form onSubmit={handleSubmit} className="flex gap-3">
+              <input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="রিদোয়ান সম্পর্কে জিজ্ঞাসা করুন... 👻"
+                disabled={isLoading}
+                className="flex-1 rounded-xl border border-purple-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed placeholder-gray-500 text-sm bg-white/80 backdrop-blur-sm shadow-inner"
+              />
+              <button
+                type="submit"
+                disabled={!input.trim() || isLoading}
+                className="bg-gradient-to-br from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white rounded-xl px-5 py-3 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg hover:shadow-purple-500/30 group backdrop-blur-sm"
+              >
+                <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </form>
+            
+            {/* Quick Suggestions */}
+            <div className="flex gap-2 mt-4 flex-wrap">
+              {[
+                { label: 'প্রজেক্ট', query: 'রিদোয়ানের প্রজেক্ট সম্পর্কে বলুন' },
+                { label: 'দক্ষতা', query: 'তার প্রযুক্তিগত দক্ষতা কী' },
+                { label: 'যোগাযোগ', query: 'কীভাবে তার সাথে যোগাযোগ করব' },
+                { label: 'শিক্ষা', query: 'তার শিক্ষাগত পটভূমি' }
+              ].map((suggestion) => (
+                <button
+                  key={suggestion.label}
+                  onClick={() => setInput(suggestion.query)}
+                  className="text-xs bg-purple-100 hover:bg-purple-200 text-purple-700 px-3 py-2 rounded-full transition-all duration-200 border border-purple-300 hover:border-purple-400 shadow-sm backdrop-blur-sm"
+                >
+                  {suggestion.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       )}
 
@@ -923,28 +733,37 @@ Try asking: "Tell me about Ridoan's projects" or "How can I contact him?"`;
       <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
-          25% { transform: translateY(-6px) rotate(1deg); }
-          50% { transform: translateY(-3px) rotate(0deg); }
-          75% { transform: translateY(-8px) rotate(-1deg); }
+          25% { transform: translateY(-8px) rotate(2deg); }
+          50% { transform: translateY(-4px) rotate(0deg); }
+          75% { transform: translateY(-10px) rotate(-2deg); }
         }
         .animate-float {
           animation: float 4s ease-in-out infinite;
         }
         
-        /* Custom scrollbar */
+        @keyframes scale-in {
+          0% { transform: scale(0.9) translateY(20px); opacity: 0; }
+          100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .animate-scale-in {
+          animation: scale-in 0.3s ease-out;
+        }
+        
+        /* Enhanced scrollbar */
         .overflow-y-auto::-webkit-scrollbar {
-          width: 4px;
+          width: 6px;
         }
         .overflow-y-auto::-webkit-scrollbar-track {
-          background: #f1f5f9;
-          border-radius: 4px;
+          background: linear-gradient(to bottom, #f8fafc, #e2e8f0);
+          border-radius: 6px;
         }
         .overflow-y-auto::-webkit-scrollbar-thumb {
-          background: #a855f7;
-          border-radius: 4px;
+          background: linear-gradient(to bottom, #a855f7, #9333ea);
+          border-radius: 6px;
+          border: 1px solid #e2e8f0;
         }
         .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-          background: #9333ea;
+          background: linear-gradient(to bottom, #9333ea, #7c3aed);
         }
       `}</style>
     </div>
